@@ -1,5 +1,7 @@
 ﻿using Antlr4.Runtime.Misc;
+using Antlr4.Runtime.Tree;
 using FUSQL.Grammer;
+using FUSQL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,16 +10,48 @@ using System.Threading.Tasks;
 
 namespace FUSQL
 {
-    public class FUSQLVisitor : FUSQLBaseVisitor<object>
+    public class FUSQLVisitor : FUSQLBaseVisitor<Query>
     {
-        public override object VisitCommand([NotNull] FUSQLParser.CommandContext context)
+        private Query ParsedQuery;
+        private int _commandIndex = -1;
+        private int _attributeIndex = -1;
+        public override Query VisitQuery([NotNull] FUSQLParser.QueryContext context)
         {
-            var name = context.group()?.name()?.GetText();
-            var attributeName = context.group().attribute()[0]?.name().GetText();
-            var attributeValue = context.group().attribute()[0]?.value().GetText();
-            var x = context.group().attribute()[0].EQUAL();
-            var y = context.group().attribute()[0].NOT_EQUAL();
+            ParsedQuery = new Query();
+            _commandIndex = -1;
+            _attributeIndex = -1;
+            base.VisitQuery(context);
+            return ParsedQuery;
+            
+        }
+        public override Query VisitCommand([NotNull] FUSQLParser.CommandContext context)
+        {
+            ParsedQuery.Commands.Add(new Command()
+            {    
+            });
+            _commandIndex++;
             return base.VisitCommand(context);
+        }
+        public override Query VisitGroup([NotNull] FUSQLParser.GroupContext context)
+        {
+            var command = ParsedQuery.Commands[_commandIndex];
+            command.Group = new Group()
+            {
+                Name = context.name().GetText()
+            };
+            return base.VisitGroup(context);
+        }
+        public override Query VisitAttribute([NotNull] FUSQLParser.AttributeContext context)
+        {
+            var command = ParsedQuery.Commands[_commandIndex];
+            command.Group.Attributes.Add(new Models.Attribute()
+            {
+                Name = context.name().GetText(),
+                Value = context.value().GetText(),
+                Operation = context.EQUAL() == null ? "!=" : "=" 
+            });
+            _attributeIndex++;
+            return base.VisitAttribute(context);
         }
     }
 }

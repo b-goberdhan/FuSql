@@ -7,7 +7,7 @@ grammar FUSQL;
  group			: GROUP name USING (attribute)+ ;
  attribute		: (name EQUAL value) | (name NOT_EQUAL value);
  name			: WORD ;
- value			: WORD ;
+ value			: WORD | NUMBER ;
 
 /*
  * Lexer Rules
@@ -30,4 +30,6 @@ GROUP			: G R O U P ;
 USING			: U S I N G ;
 FIND			: F I N D ;
 WORD			: (UPPERCASE | LOWERCASE)+ ;
+NUMBER			: [0-9]+ ;
 NEWLINE			: '\r' '\n' | '\n' | '\r';
+WHITESPACE		: (' ')+ -> skip ;

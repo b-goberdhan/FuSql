@@ -13,14 +13,17 @@ namespace FUSQL_Tester
     {
         static void Main(string[] args)
         {
-            AntlrInputStream input = new AntlrInputStream("FIND GROUP jim USING hair = ugly\n");
+            AntlrInputStream input = new AntlrInputStream("FIND GROUP jim USING hair = ugly skin = white\n");
             FUSQLLexer lexer = new FUSQLLexer(input);
             CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
             FUSQLParser parser = new FUSQLParser(commonTokenStream);
             FUSQLVisitor visitor = new FUSQLVisitor();
-            FUSQLParser.CommandContext commandContext = parser.command();
             
-            visitor.Visit(commandContext);
+            FUSQLParser.QueryContext commandContext = parser.query();
+            
+            var query = visitor.Visit(commandContext);
+            Console.WriteLine(query);
+            Console.ReadLine();
         }
     }
 }
