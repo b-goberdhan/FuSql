@@ -32,19 +32,29 @@ namespace FUSQL
             _commandIndex++;
             return base.VisitCommand(context);
         }
+        public override Query VisitFind([NotNull] FUSQLParser.FindContext context)
+        {
+            ParsedQuery.Commands[_commandIndex].Find = new Find();
+            return base.VisitFind(context);
+        }
         public override Query VisitGroup([NotNull] FUSQLParser.GroupContext context)
         {
             var command = ParsedQuery.Commands[_commandIndex];
-            command.Group = new Group()
+            command.Find.Group = new Group()
             {
                 Name = context.name().GetText()
             };
             return base.VisitGroup(context);
         }
+        public override Query VisitFrom([NotNull] FUSQLParser.FromContext context)
+        {
+            ParsedQuery.Commands[_commandIndex].Find.From = context.name().GetText();
+            return base.VisitFrom(context);
+        }
         public override Query VisitAttribute([NotNull] FUSQLParser.AttributeContext context)
         {
             var command = ParsedQuery.Commands[_commandIndex];
-            command.Group.Attributes.Add(new Models.Attribute()
+            command.Find.Group.Attributes.Add(new Models.Attribute()
             {
                 Name = context.name().GetText(),
                 Value = context.value().GetText(),
