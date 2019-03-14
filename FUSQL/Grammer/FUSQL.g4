@@ -4,8 +4,8 @@ grammar FUSQL;
  */
  query			: command NEWLINE ;
  command		: (find | create | create find)+ ;
- find			: FIND group from ;
- group			: GROUP name USING (attribute)+ ;
+ find			: FIND groups from ;
+ groups			: GROUPS name USING (attribute)+ ; // Groups in this case is analogus to clusters
  create			: CREATE CLASS name USING (attribute)+ ;
  from			: FROM name ;
  attribute		: (name EQUAL value) | (name NOT_EQUAL value);
@@ -34,8 +34,8 @@ fragment L		: ('L'|'l') ;
 UPPERCASE		: [A-Z] ;
 LOWERCASE		: [a-z] ;
 EQUAL			: '=' ;
-NOT_EQAUL		: '!=' ;
-GROUP			: G R O U P ;
+NOT_EQUAL		: '!=' ;
+GROUPS			: G R O U P S ;
 CREATE			: C R E A T E ;
 CLASS			: C L A S S ;
 FROM			: F R O M ;

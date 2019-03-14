@@ -37,14 +37,14 @@ namespace FUSQL
             ParsedQuery.Commands[_commandIndex].Find = new Find();
             return base.VisitFind(context);
         }
-        public override Query VisitGroup([NotNull] FUSQLParser.GroupContext context)
+        public override Query VisitGroups([NotNull] FUSQLParser.GroupsContext context)
         {
             var command = ParsedQuery.Commands[_commandIndex];
             command.Find.Group = new Group()
             {
                 Name = context.name().GetText()
             };
-            return base.VisitGroup(context);
+            return base.VisitGroups(context);
         }
         public override Query VisitFrom([NotNull] FUSQLParser.FromContext context)
         {

@@ -9,14 +9,14 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Database;
 namespace FUSQL_Tester
 {
     class Program
     {
         static void Main(string[] args)
         {
-            AntlrInputStream input = new AntlrInputStream("FIND GROUP jim USING hair = ugly skin = pale FROM people\n");
+            AntlrInputStream input = new AntlrInputStream("FIND GROUPS fireclusters USING hair = ugly skin = pale FROM people\n");
             FUSQLLexer lexer = new FUSQLLexer(input);
             CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
             FUSQLParser parser = new FUSQLParser(commonTokenStream);
@@ -25,9 +25,39 @@ namespace FUSQL_Tester
             FUSQLParser.QueryContext commandContext = parser.query();
             
             var query = visitor.Visit(commandContext);
+            dbSQLite();
             Console.WriteLine(query);
             Console.ReadLine();
         }
+        private static void dbSQLite()
+        {
+            var path = Path.GetFullPath("./database.sqlite");
+            var db = new Database.SQLite.Db(path);
+            db.Connect();
+            List<Iris> list = new List<Iris>();
+            db.Command("SELECT * FROM Iris", (reader) =>
+            {
+                var iris = new Iris();
+
+                iris.SepalLengthCm = (decimal)reader["SepalLengthCm"];
+                iris.SepalWidthCm = (decimal)reader["SepalWidthCm"];
+                iris.PetalLengthCm = (decimal)reader["PetalLengthCm"];
+                iris.PetalWidthCm = (decimal)reader["PetalWidthCm"];
+                iris.Species = (string)reader["Species"];
+
+                list.Add(iris);
+               
+            });
+            int x = 0;
+        }
+    }
+    class Iris
+    {
+        public decimal SepalLengthCm { get; set; }
+        public decimal SepalWidthCm { get; set; }
+        public decimal PetalLengthCm { get; set; }
+        public decimal PetalWidthCm { get; set; }
+        public string Species { get; set; }
     }
      
 }
