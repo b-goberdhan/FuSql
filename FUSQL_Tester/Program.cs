@@ -10,6 +10,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Database;
+using Database.SQLite;
+
 namespace FUSQL_Tester
 {
     class Program
@@ -32,7 +34,7 @@ namespace FUSQL_Tester
         private static void dbSQLite()
         {
             var path = Path.GetFullPath("./database.sqlite");
-            var db = new Database.SQLite.SqliteDb(path);
+            var db = new SqliteDb(path);
             db.Connect();
             List<Iris> list = new List<Iris>();
             db.Command<Iris>("SELECT * FROM Iris", (iris) =>

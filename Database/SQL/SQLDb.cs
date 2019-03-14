@@ -12,7 +12,7 @@ namespace Database.MSSQL
     public class SqlDb : BaseDb.Db
     {
 
-        public Db(string connectionString) : base(new SqlConnection(connectionString))
+        public SqlDb(string connectionString) : base(new SqlConnection(connectionString))
         {
         }
     }
