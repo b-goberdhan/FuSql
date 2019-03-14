@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Database.MSSQL
 {
-    public class Db : BaseDb.Db
+    public class SqlDb : BaseDb.Db
     {
 
         public Db(string connectionString) : base(new SqlConnection(connectionString))

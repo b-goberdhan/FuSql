@@ -10,9 +10,9 @@ using System.Threading.Tasks;
 
 namespace Database.SQLite
 {
-    public class Db : BaseDb.Db
+    public class SqliteDb : BaseDb.Db
     {
-        public Db(string path) : base(new SQLiteConnection("Data Source=" + path + ";Version=3"))
+        public SqliteDb(string path) : base(new SQLiteConnection("Data Source=" + path + ";Version=3"))
         {
         }       
     }

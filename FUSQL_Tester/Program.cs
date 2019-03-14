@@ -32,7 +32,7 @@ namespace FUSQL_Tester
         private static void dbSQLite()
         {
             var path = Path.GetFullPath("./database.sqlite");
-            var db = new Database.SQLite.Db(path);
+            var db = new Database.SQLite.SqliteDb(path);
             db.Connect();
             List<Iris> list = new List<Iris>();
             db.Command<Iris>("SELECT * FROM Iris", (iris) =>
