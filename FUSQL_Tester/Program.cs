@@ -11,6 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Database;
 using Database.SQLite;
+using FUSQL.Mining;
 
 namespace FUSQL_Tester
 {
@@ -36,12 +37,25 @@ namespace FUSQL_Tester
             var path = Path.GetFullPath("./database.sqlite");
             var db = new SqliteDb(path);
             db.Connect();
-            List<Iris> list = new List<Iris>();
+            List<IrisPredict> listPredict = new List<IrisPredict>();
             db.Command<Iris>("SELECT * FROM Iris", (iris) =>
             {
-                list.Add(iris);
+                listPredict.Add(new IrisPredict()
+                {
+                    PetalLengthCm = Convert.ToSingle(iris.PetalLengthCm),
+                    PetalWidthCm = Convert.ToSingle(iris.PetalWidthCm),
+                    SepalLengthCm = Convert.ToSingle(iris.SepalLengthCm),
+                    SepalWidthCm = Convert.ToSingle(iris.SepalWidthCm),
+                    Species = iris.Species
+                });
             });
-            int y = 0;
+            var clusterer = new Clustering<IrisPredict>(5, listPredict);
+            clusterer.BuildModel("SepalLengthCm");
+            foreach (var item in listPredict)
+            {
+                var result = clusterer.Evaluate(item);
+                Console.WriteLine(result.SelectedClusterId);
+            }
         }
     }
     class Iris
@@ -52,5 +66,13 @@ namespace FUSQL_Tester
         public decimal PetalWidthCm { get; set; }
         public string Species { get; set; }
     }
-     
+    class IrisPredict
+    {
+        public float SepalLengthCm { get; set; }
+        public float SepalWidthCm { get; set; }
+        public float PetalLengthCm { get; set; }
+        public float PetalWidthCm { get; set; }
+        public string Species { get; set; }
+    }
+
 }

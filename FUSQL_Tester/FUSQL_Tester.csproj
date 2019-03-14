@@ -231,6 +231,10 @@
       <Project>{17de9f76-cc42-4c9a-8556-c3a71c98ce7d}</Project>
       <Name>Database</Name>
     </ProjectReference>
+    <ProjectReference Include="..\DataMinner\DataMinner.csproj">
+      <Project>{C85B7E55-CB49-499B-83F9-66532FFAFD78}</Project>
+      <Name>DataMinner</Name>
+    </ProjectReference>
     <ProjectReference Include="..\FUSQL\FUSQL.csproj">
       <Project>{c3db7e8b-c150-49fa-b464-13adc9067fb9}</Project>
       <Name>FUSQL</Name>

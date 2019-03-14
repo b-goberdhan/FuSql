@@ -23,7 +23,7 @@ namespace Database.BaseDb
         {
             _connection.Close();
         }
-        public virtual void Command<TRowModel>(string sqlCommand, Action<TRowModel> onRowRead)
+        public virtual void Command<TRowModel>(string sqlCommand, Action<TRowModel> onRowRead) where TRowModel : class, new()
         {
             var command = _connection.CreateCommand();
             command.CommandText = sqlCommand;

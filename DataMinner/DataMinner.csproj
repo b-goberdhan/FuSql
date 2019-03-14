@@ -97,7 +97,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Mining\Classification.cs" />
+    <Compile Include="Mining\Clustering.cs" />
+    <Compile Include="Mining\ClusterPrediction.cs" />
     <Compile Include="Mining\IMinningOperation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
