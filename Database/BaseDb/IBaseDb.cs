@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace Database.BaseDb
 {
-    public interface IBaseDb<CommandResult,TRow>
+    public interface IBaseDb
     {
         void Connect();
         void Disconnect();
-        CommandResult Command(string command, Action<TRow> onRowRead);
     }
 }

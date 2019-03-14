@@ -2,18 +2,18 @@
 using System;
 using System.Collections.Generic;
 using System.Data.Common;
-using System.Data.SQLite;
-using System.Dynamic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Database.SQLite
+namespace Database.MSSQL
 {
     public class Db : BaseDb.Db
     {
-        public Db(string path) : base(new SQLiteConnection("Data Source=" + path + ";Version=3"))
+
+        public Db(string connectionString) : base(new SqlConnection(connectionString))
         {
-        }       
+        }
     }
 }

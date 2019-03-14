@@ -35,20 +35,11 @@ namespace FUSQL_Tester
             var db = new Database.SQLite.Db(path);
             db.Connect();
             List<Iris> list = new List<Iris>();
-            db.Command("SELECT * FROM Iris", (reader) =>
+            db.Command<Iris>("SELECT * FROM Iris", (iris) =>
             {
-                var iris = new Iris();
-
-                iris.SepalLengthCm = (decimal)reader["SepalLengthCm"];
-                iris.SepalWidthCm = (decimal)reader["SepalWidthCm"];
-                iris.PetalLengthCm = (decimal)reader["PetalLengthCm"];
-                iris.PetalWidthCm = (decimal)reader["PetalWidthCm"];
-                iris.Species = (string)reader["Species"];
-
                 list.Add(iris);
-               
             });
-            int x = 0;
+            int y = 0;
         }
     }
     class Iris

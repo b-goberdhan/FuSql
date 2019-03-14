@@ -59,8 +59,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseDb\Db.cs" />
     <Compile Include="BaseDb\IBaseDb.cs" />
     <Compile Include="Class1.cs" />
+    <Compile Include="SQL\Db.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLite\Db.cs" />
   </ItemGroup>
