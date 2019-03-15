@@ -7,8 +7,10 @@ using System.Threading.Tasks;
 
 namespace DataMinner.Mining
 {
+    // Output of the clustering model applied to an Iris instance
     public class ClusterPrediction
     {
+        // The attributes would be used if we saved the output data
         [ColumnName("PredictedLabel")]
         public uint SelectedClusterId;
         [ColumnName("Score")]

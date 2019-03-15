@@ -19,24 +19,30 @@ namespace FUSQL_Tester
     {
         static void Main(string[] args)
         {
+            // TODO: Data-mining operation doesn't use the queried data at the moment
+            // Get the user query input, tokenize, and parse it to a SQL data structure
             AntlrInputStream input = new AntlrInputStream("FIND GROUPS fireclusters USING hair = ugly skin = pale FROM people\n");
             FUSQLLexer lexer = new FUSQLLexer(input);
             CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
             FUSQLParser parser = new FUSQLParser(commonTokenStream);
-            FUSQLVisitor visitor = new FUSQLVisitor();
-            
             FUSQLParser.QueryContext commandContext = parser.query();
-            
+
+            FUSQLVisitor visitor = new FUSQLVisitor();
             var query = visitor.Visit(commandContext);
+
+            // Perform a data mining query operation
             dbSQLite();
             Console.WriteLine(query);
             Console.ReadLine();
         }
         private static void dbSQLite()
         {
+            // Connect to the database
             var path = Path.GetFullPath("./database.sqlite");
             var db = new SqliteDb(path);
             db.Connect();
+
+            // Populate a list of iris from the database 
             List<IrisPredict> listPredict = new List<IrisPredict>();
             db.Command<Iris>("SELECT * FROM Iris", (iris) =>
             {
@@ -49,15 +55,21 @@ namespace FUSQL_Tester
                     Species = iris.Species
                 });
             });
+
+            // Perform the clustering data mining operation based on attribute(s)
             var clusterer = new Clustering<IrisPredict>(5, listPredict);
             clusterer.BuildModel("SepalLengthCm");
+            // For each item, predict and output which cluster it's in
             foreach (var item in listPredict)
             {
+                // Each item is tested against the test data set
                 var result = clusterer.Evaluate(item);
                 Console.WriteLine(result.SelectedClusterId);
+                Console.WriteLine(string.Join(" ", result.Distance));
             }
         }
     }
+    // Input data class and has definitions for each feature from the data set
     class Iris
     {
         public decimal SepalLengthCm { get; set; }
