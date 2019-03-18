@@ -9,6 +9,7 @@ namespace FUSQL.Models
     public class Group
     {
         public string Name { get; set; }
-        public List<Attribute> Attributes { get; set; } = new List<Attribute>();
+        public int Count { get; set; }
+        public List<string> Columns { get; set; } = new List<string>();
     }
 }

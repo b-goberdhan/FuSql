@@ -12,6 +12,9 @@ using System.Threading.Tasks;
 using Database;
 using Database.SQLite;
 using FUSQL.Mining;
+using FUSQL.SQLTranslate.Translator;
+using FUSQL.SQLTranslate.Translator.Extensions;
+using FUSQL.SQLTranslate.Results;
 
 namespace FUSQL_Tester
 {
@@ -21,18 +24,21 @@ namespace FUSQL_Tester
         {
             // TODO: Data-mining operation doesn't use the queried data at the moment
             // Get the user query input, tokenize, and parse it to a SQL data structure
-            AntlrInputStream input = new AntlrInputStream("FIND GROUPS fireclusters USING hair = ugly skin = pale FROM people\n");
-            FUSQLLexer lexer = new FUSQLLexer(input);
-            CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
-            FUSQLParser parser = new FUSQLParser(commonTokenStream);
-            FUSQLParser.QueryContext commandContext = parser.query();
+            var path = Path.GetFullPath("./database.sqlite");
+            var db = new SqliteDb(path);
+            db.Connect();
+            var handler = new FUSQLHandler();
+            var query = handler.ParseQuery("FIND 5 GROUPS irisClusters USING SepalLengthCm PetalLengthCm FROM Iris\n");
+            var translation = Translator.TranslateQuery<Iris>(query);
+            var resultView = translation.RunClustering(db);
 
-            FUSQLVisitor visitor = new FUSQLVisitor();
-            var query = visitor.Visit(commandContext);
 
             // Perform a data mining query operation
-            dbSQLite();
-            Console.WriteLine(query);
+            //dbSQLite();
+            foreach (var key in (resultView as ClusterResultView<Iris>).Clusters.Keys)
+            {
+                Console.WriteLine("Cluster " + key + " count : " + (resultView as ClusterResultView<Iris>).Clusters[key].Count);
+            }
             Console.ReadLine();
         }
         private static void dbSQLite()

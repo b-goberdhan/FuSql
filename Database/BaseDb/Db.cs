@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Database.BaseDb
 {
-    public abstract class Db : IBaseDb
+    public abstract class Db : IDb
     {
         protected readonly DbConnection _connection;
         public Db(DbConnection connection)

@@ -47,6 +47,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FUSQLHandler.cs" />
     <Compile Include="FUSQLVisitor.cs" />
     <Compile Include="Grammer\FUSQL.g4.lexer.cs">
       <DependentUpon>FUSQL.g4</DependentUpon>
@@ -60,6 +61,12 @@
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Query.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SQLTranslate\Operations.cs" />
+    <Compile Include="SQLTranslate\Results\ClusterResultView.cs" />
+    <Compile Include="SQLTranslate\Results\ResultView.cs" />
+    <Compile Include="SQLTranslate\Translator\Extensions\ClusteringExtension.cs" />
+    <Compile Include="SQLTranslate\Translator\Translation.cs" />
+    <Compile Include="SQLTranslate\Translator\Translator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Antlr4 Include="Grammer\FUSQL.g4">
@@ -69,7 +76,14 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="SQLTranslate\" />
+    <ProjectReference Include="..\Database\Database.csproj">
+      <Project>{17DE9F76-CC42-4C9A-8556-C3A71C98CE7D}</Project>
+      <Name>Database</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DataMinner\DataMinner.csproj">
+      <Project>{C85B7E55-CB49-499B-83F9-66532FFAFD78}</Project>
+      <Name>DataMinner</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

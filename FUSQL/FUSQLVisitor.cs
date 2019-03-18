@@ -13,12 +13,10 @@ namespace FUSQL
     public class FUSQLVisitor : FUSQLBaseVisitor<Query>
     {
         private Query ParsedQuery;
-        private int _commandIndex = -1;
         private int _attributeIndex = -1;
         public override Query VisitQuery([NotNull] FUSQLParser.QueryContext context)
         {
             ParsedQuery = new Query();
-            _commandIndex = -1;
             _attributeIndex = -1;
             base.VisitQuery(context);
             return ParsedQuery;
@@ -26,42 +24,36 @@ namespace FUSQL
         }
         public override Query VisitCommand([NotNull] FUSQLParser.CommandContext context)
         {
-            ParsedQuery.Commands.Add(new Command()
-            {    
-            });
-            _commandIndex++;
+            ParsedQuery.Command = new Command();
             return base.VisitCommand(context);
         }
         public override Query VisitFind([NotNull] FUSQLParser.FindContext context)
         {
-            ParsedQuery.Commands[_commandIndex].Find = new Find();
+            ParsedQuery.Command.Find = new Find();
             return base.VisitFind(context);
         }
         public override Query VisitGroups([NotNull] FUSQLParser.GroupsContext context)
         {
-            var command = ParsedQuery.Commands[_commandIndex];
+            var command = ParsedQuery.Command;
             command.Find.Group = new Group()
             {
-                Name = context.name().GetText()
+                Count = int.Parse(context.number().GetText()),
+                Name = context.name().GetText(),
+
             };
             return base.VisitGroups(context);
         }
         public override Query VisitFrom([NotNull] FUSQLParser.FromContext context)
         {
-            ParsedQuery.Commands[_commandIndex].Find.From = context.name().GetText();
+            ParsedQuery.Command.Find.From = context.name().GetText();
             return base.VisitFrom(context);
         }
-        public override Query VisitAttribute([NotNull] FUSQLParser.AttributeContext context)
+        public override Query VisitColumn([NotNull] FUSQLParser.ColumnContext context)
         {
-            var command = ParsedQuery.Commands[_commandIndex];
-            command.Find.Group.Attributes.Add(new Models.Attribute()
-            {
-                Name = context.name().GetText(),
-                Value = context.value().GetText(),
-                Operation = context.EQUAL() == null ? "!=" : "=" 
-            });
-            _attributeIndex++;
-            return base.VisitAttribute(context);
+            var command = ParsedQuery.Command;
+            command.Find.Group.Columns.Add(context.GetText());
+            return base.VisitColumn(context);
         }
+
     }
 }

@@ -3,13 +3,14 @@ grammar FUSQL;
  * Parser Rules
  */
  query			: command NEWLINE ;
- command		: (find | create | create find)+ ;
+ command		: (find) ;
  find			: FIND groups from ;
- groups			: GROUPS name USING (attribute)+ ; // Groups in this case is analogus to clusters
- create			: CREATE CLASS name USING (attribute)+ ;
+ groups			: number GROUPS name USING (column)+ ; // Groups in this case is analogus to clusters
  from			: FROM name ;
  attribute		: (name EQUAL value) | (name NOT_EQUAL value);
+ column			: WORD ;
  name			: WORD ;
+ number			: NUMBER ;
  value			: WORD | NUMBER ;
 
 /*

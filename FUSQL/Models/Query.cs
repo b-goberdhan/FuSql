@@ -8,7 +8,6 @@ namespace FUSQL.Models
 {
     public class Query
     {
-        public List<Command> Commands = new List<Command>();
-      
+        public Command Command = new Command();
     }
 }
