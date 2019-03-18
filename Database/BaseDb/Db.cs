@@ -59,6 +59,10 @@ namespace Database.BaseDb
                 {
                     property.SetValue(rowModel, Convert.ChangeType(columnValues[i], columnTypes[i]));
                 }
+                else if (property != null && property.PropertyType != columnTypes[i])
+                {
+                    property.SetValue(rowModel, Convert.ChangeType(columnValues[i], property.PropertyType));
+                }
             }
             return rowModel;
         }

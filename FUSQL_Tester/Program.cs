@@ -43,21 +43,14 @@ namespace FUSQL_Tester
             db.Connect();
 
             // Populate a list of iris from the database 
-            List<IrisPredict> listPredict = new List<IrisPredict>();
+            List<Iris> listPredict = new List<Iris>();
             db.Command<Iris>("SELECT * FROM Iris", (iris) =>
             {
-                listPredict.Add(new IrisPredict()
-                {
-                    PetalLengthCm = Convert.ToSingle(iris.PetalLengthCm),
-                    PetalWidthCm = Convert.ToSingle(iris.PetalWidthCm),
-                    SepalLengthCm = Convert.ToSingle(iris.SepalLengthCm),
-                    SepalWidthCm = Convert.ToSingle(iris.SepalWidthCm),
-                    Species = iris.Species
-                });
+                listPredict.Add(iris);
             });
 
             // Perform the clustering data mining operation based on attribute(s)
-            var clusterer = new Clustering<IrisPredict>(5, listPredict);
+            var clusterer = new Clustering<Iris>(5, listPredict);
             clusterer.BuildModel("SepalLengthCm");
             // For each item, predict and output which cluster it's in
             foreach (var item in listPredict)
@@ -69,16 +62,8 @@ namespace FUSQL_Tester
             }
         }
     }
-    // Input data class and has definitions for each feature from the data set
+    
     class Iris
-    {
-        public decimal SepalLengthCm { get; set; }
-        public decimal SepalWidthCm { get; set; }
-        public decimal PetalLengthCm { get; set; }
-        public decimal PetalWidthCm { get; set; }
-        public string Species { get; set; }
-    }
-    class IrisPredict
     {
         public float SepalLengthCm { get; set; }
         public float SepalWidthCm { get; set; }
