@@ -20,7 +20,6 @@ namespace FUSQL
             _attributeIndex = -1;
             base.VisitQuery(context);
             return ParsedQuery;
-            
         }
         public override Query VisitCommand([NotNull] FUSQLParser.CommandContext context)
         {

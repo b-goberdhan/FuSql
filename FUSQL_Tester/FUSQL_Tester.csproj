@@ -216,6 +216,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="binaryclassification.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="database.sqlite">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -240,6 +243,11 @@
       <Project>{c3db7e8b-c150-49fa-b464-13adc9067fb9}</Project>
       <Name>FUSQL</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="amazon_cells_labelled.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">

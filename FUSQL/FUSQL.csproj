@@ -64,6 +64,7 @@
     <Compile Include="SQLTranslate\Operations.cs" />
     <Compile Include="SQLTranslate\Results\ClusterResultView.cs" />
     <Compile Include="SQLTranslate\Results\ResultView.cs" />
+    <Compile Include="SQLTranslate\Translator\Extensions\BinaryClassificationExtension.cs" />
     <Compile Include="SQLTranslate\Translator\Extensions\ClusteringExtension.cs" />
     <Compile Include="SQLTranslate\Translator\Translation.cs" />
     <Compile Include="SQLTranslate\Translator\Translator.cs" />

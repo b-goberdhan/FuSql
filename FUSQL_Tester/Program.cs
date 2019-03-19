@@ -15,6 +15,8 @@ using FUSQL.Mining;
 using FUSQL.SQLTranslate.Translator;
 using FUSQL.SQLTranslate.Translator.Extensions;
 using FUSQL.SQLTranslate.Results;
+using DataMinner.Mining;
+using Microsoft.Data.DataView;
 
 namespace FUSQL_Tester
 {
@@ -22,24 +24,56 @@ namespace FUSQL_Tester
     {
         static void Main(string[] args)
         {
-            // TODO: Data-mining operation doesn't use the queried data at the moment
-            // Get the user query input, tokenize, and parse it to a SQL data structure
-            var path = Path.GetFullPath("./database.sqlite");
-            var db = new SqliteDb(path);
-            db.Connect();
-            var handler = new FUSQLHandler();
-            var query = handler.ParseQuery("FIND 5 GROUPS irisClusters USING SepalLengthCm PetalLengthCm FROM Iris\n");
-            var translation = Translator.TranslateQuery<Iris>(query);
-            var resultView = translation.RunClustering(db);
-
-
-            // Perform a data mining query operation
-            //dbSQLite();
-            foreach (var key in (resultView as ClusterResultView<Iris>).Clusters.Keys)
+            // Choose the data mining operation from input
+            Console.WriteLine("Input BC for binary classification, MC for multiclass classification, or C for clustering");
+            var userInput = Console.ReadLine();
+            if(userInput == "BC")
             {
-                Console.WriteLine("Cluster " + key + " count : " + (resultView as ClusterResultView<Iris>).Clusters[key].Count);
+                Console.WriteLine("BC selected");
+                // Connect to the binary classification DB
+                var path = Path.GetFullPath("./binaryclassification.db"); 
+                var db = new SqliteDb(path);
+                db.Connect();
+
+                // Setup a tokenizer, parser, and SQL converter
+                // var handler = new FUSQLHandler();
+                // var query = handler.ParseQuery("");
+                // var translation = Translator.TranslateQuery<Iris>(query);
+                // var resultView = translation.RunClustering(db);
+
+                var resultView = new BinaryClassification();
+                resultView.BuildModel();
             }
-            Console.ReadLine();
+            else if(userInput == "MC")
+            {
+                Console.WriteLine("MC selected");
+            }
+            else if(userInput == "C")
+            {
+                Console.WriteLine("C selected");
+                // Connect to the database
+                var path = Path.GetFullPath("./database.sqlite");
+                var db = new SqliteDb(path);
+                db.Connect();
+
+                // Setup a tokenizer, parser, and SQL converter
+                var handler = new FUSQLHandler();
+                var query = handler.ParseQuery("FIND 5 GROUPS irisClusters USING SepalLengthCm PetalLengthCm FROM Iris\n");
+                var translation = Translator.TranslateQuery<Iris>(query);
+                var resultView = translation.RunClustering(db);
+
+                // Perform a data mining query operation
+                // dbSQLite();
+                foreach (var key in (resultView as ClusterResultView<Iris>).Clusters.Keys)
+                {
+                    Console.WriteLine("Cluster " + key + " count : " + (resultView as ClusterResultView<Iris>).Clusters[key].Count);
+                }
+                Console.ReadLine();
+            }
+            else
+            {
+                Console.WriteLine("\nInvalid input.");
+            }
         }
         private static void dbSQLite()
         {
