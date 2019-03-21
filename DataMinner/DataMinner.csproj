@@ -104,6 +104,9 @@
     <Compile Include="Mining\Clustering.cs" />
     <Compile Include="Mining\ClusterPrediction.cs" />
     <Compile Include="Mining\Enums\MiningOp.cs" />
+    <Compile Include="Mining\MulticlassClassification.cs" />
+    <Compile Include="Mining\MulticlassClassificationData.cs" />
+    <Compile Include="Mining\MulticlassClassificationPrediction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

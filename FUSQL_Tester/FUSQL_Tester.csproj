@@ -225,6 +225,12 @@
     <None Include="Groceries_dataset.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="issues_test.tsv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Include="issues_train.tsv">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="training.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

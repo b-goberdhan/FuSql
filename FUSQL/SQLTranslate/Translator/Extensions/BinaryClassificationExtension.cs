@@ -15,7 +15,7 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
                 throw new Exception("Cannot run binary classification on translation not meant for binary classification.");
             }
 
-            // Gather initial data from the DB. We need this to train our clustering operation
+            // Gather initial data from the DB. We need this to train our binary classification operation
             var sqlResults = new List<TRowModel>();
             translation.RunSQL(db, (model) =>
             {

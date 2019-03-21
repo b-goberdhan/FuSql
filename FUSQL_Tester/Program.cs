@@ -47,6 +47,16 @@ namespace FUSQL_Tester
             else if(userInput == "MC")
             {
                 Console.WriteLine("MC selected");
+
+
+                // Setup a tokenizer, parser, and SQL converter
+                // var handler = new FUSQLHandler();
+                // var query = handler.ParseQuery("");
+                // var translation = Translator.TranslateQuery<Iris>(query);
+                // var resultView = translation.RunClustering(db);
+
+                var resultView = new MulticlassClassification();
+                resultView.BuildModel();
             }
             else if(userInput == "C")
             {
