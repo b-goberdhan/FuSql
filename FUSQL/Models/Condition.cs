@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace FUSQL.Models
 {
-    public class Command
+    public class Condition
     {
-        public Find Find { get; set; }
-        public Get Get { get; set; } = Get.None;
+        public string ColumnName { get; set; }
+        public string Value { get; set; }
+        public Operation Operation { get; set; }
     }
 }

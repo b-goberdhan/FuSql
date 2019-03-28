@@ -8,9 +8,12 @@ namespace DataMinner.Mining.Enums
 {
     public enum MiningOp
     {
+
         None,
         Clustering,
         BinaryClassification,
         MultiClassification
+       
+        
     }
 }

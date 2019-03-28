@@ -6,10 +6,8 @@ using System.Threading.Tasks;
 
 namespace FUSQL.Models
 {
-    public class Attribute
+    public class Where
     {
-        public string Name { get; set; }
-        public string Value { get; set; }
-        public string Operation { get; set; }
+        public List<Condition> Conditions { get; set; }
     }
 }
