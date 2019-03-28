@@ -22,7 +22,8 @@ namespace FUSQL
             FUSQLLexer lexer = new FUSQLLexer(inputStream);
             CommonTokenStream commonTokenStream = new CommonTokenStream(lexer);
             FUSQLParser parser = new FUSQLParser(commonTokenStream);
-            FUSQLParser.QueryContext query = parser.query();
+            // Specify the root node of the AST AKA query starting pt 
+            FUSQLParser.QueryContext query = parser.query(); 
 
             FUSQLVisitor visitor = new FUSQLVisitor();
             return visitor.VisitQuery(query);

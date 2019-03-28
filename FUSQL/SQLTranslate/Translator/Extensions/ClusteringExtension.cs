@@ -18,8 +18,8 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
                 throw new Exception("Cannot run clustering on translation not meant for clustering.");
             }
 
+            // Gather initial data from the DB. We need this to train our clustering operation
             var sqlResults = new List<TRowModel>();
-            //Gather initial data, we need this so we can train our clustering
             translation.RunSQL(db, (model) =>
             {
                 sqlResults.Add(model);
@@ -27,7 +27,7 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
             ResultView<TRowModel> resultView = new ClusterResultView<TRowModel>(translation.Operation.MiningOp);
             // Here we are doing a clustering operation               
             var clusterer = new Clustering<TRowModel>(translation.Operation.ClusterCount, sqlResults);
-            // Build the model so we can being to use and group up the data into specific clusters
+            // Build the model so we can begin to use and group up the data into specific clusters
             clusterer.BuildModel(translation.Operation.ClusterColumns.ToArray());
             int cluster = 1;
             // Prepare the clusters so data can be added into them

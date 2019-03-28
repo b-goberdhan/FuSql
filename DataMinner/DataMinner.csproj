@@ -98,9 +98,15 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mining\BinaryClassification.cs" />
+    <Compile Include="Mining\BinaryClassificationData.cs" />
+    <Compile Include="Mining\BinaryClassificationPrediction.cs" />
     <Compile Include="Mining\Clustering.cs" />
     <Compile Include="Mining\ClusterPrediction.cs" />
     <Compile Include="Mining\Enums\MiningOp.cs" />
+    <Compile Include="Mining\MulticlassClassification.cs" />
+    <Compile Include="Mining\MulticlassClassificationData.cs" />
+    <Compile Include="Mining\MulticlassClassificationPrediction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

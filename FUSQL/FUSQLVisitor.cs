@@ -19,7 +19,6 @@ namespace FUSQL
             ParsedQuery = new Query();
             base.VisitQuery(context);
             return ParsedQuery;
-            
         }
         public override Query VisitCommand([NotNull] FUSQLParser.CommandContext context)
         {
