@@ -61,7 +61,6 @@
   <ItemGroup>
     <Compile Include="BaseDb\Db.cs" />
     <Compile Include="BaseDb\IDb.cs" />
-    <Compile Include="Class1.cs" />
     <Compile Include="SQL\SQLDb.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLite\SQLiteDb.cs" />

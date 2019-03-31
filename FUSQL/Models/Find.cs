@@ -10,5 +10,6 @@ namespace FUSQL.Models
     {
         public Group Group { get; set; }
         public string From { get; set; }
+        public Where Where { get; set; }
     }
 }

@@ -58,9 +58,12 @@
     <Compile Include="Models\Attribute.cs" />
     <Compile Include="Models\Check.cs" />
     <Compile Include="Models\Command.cs" />
+    <Compile Include="Models\Enums\Operation.cs" />
     <Compile Include="Models\Find.cs" />
+    <Compile Include="Models\Enums\Get.cs" />
     <Compile Include="Models\Group.cs" />
     <Compile Include="Models\Query.cs" />
+    <Compile Include="Models\Where.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLTranslate\Operations.cs" />
     <Compile Include="SQLTranslate\Results\ClusterResultView.cs" />

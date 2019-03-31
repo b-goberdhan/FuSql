@@ -2,6 +2,7 @@
 using Antlr4.Runtime.Tree;
 using FUSQL.Grammer;
 using FUSQL.Models;
+using FUSQL.Models.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,11 +14,9 @@ namespace FUSQL
     public class FUSQLVisitor : FUSQLBaseVisitor<Query>
     {
         private Query ParsedQuery;
-        private int _attributeIndex = -1;
         public override Query VisitQuery([NotNull] FUSQLParser.QueryContext context)
         {
             ParsedQuery = new Query();
-            _attributeIndex = -1;
             base.VisitQuery(context);
             return ParsedQuery;
         }
@@ -31,6 +30,18 @@ namespace FUSQL
             ParsedQuery.Command.Find = new Find();
             return base.VisitFind(context);
         }
+        public override Query VisitGet([NotNull] FUSQLParser.GetContext context)
+        {
+            var datasetInfo = context.dataset_info().GetText();
+            
+            Get get;
+            if (Enum.TryParse(datasetInfo, out get) && get != Get.None)
+            {
+                ParsedQuery.Command.Get = get;
+            }
+           
+            return base.VisitGet(context);
+        }
         public override Query VisitGroups([NotNull] FUSQLParser.GroupsContext context)
         {
             var command = ParsedQuery.Command;
@@ -42,6 +53,7 @@ namespace FUSQL
             };
             return base.VisitGroups(context);
         }
+
         public override Query VisitFrom([NotNull] FUSQLParser.FromContext context)
         {
             if (ParsedQuery.Command.Find != null)
@@ -53,6 +65,29 @@ namespace FUSQL
                 ParsedQuery.Command.Check.From = context.name().GetText();
             }
             return base.VisitFrom(context);
+        }
+        public override Query VisitWhere([NotNull] FUSQLParser.WhereContext context)
+        {
+            ParsedQuery.Command.Find.Where = new Where();
+            ParsedQuery.Command.Find.Where.Conditions = new List<Condition>();
+            return base.VisitWhere(context);
+        }
+        public override Query VisitConditions([NotNull] FUSQLParser.ConditionsContext context)
+        {
+            Condition condition = new Condition();
+            condition.ColumnName = context.name().GetText();
+            condition.Value = context.value().GetText();
+            condition.Operation = ParseOperation(context);
+            ParsedQuery.Command.Find.Where.Conditions.Add(condition);
+            return base.VisitConditions(context);
+        }
+        private Operation ParseOperation(FUSQLParser.ConditionsContext context)
+        {
+            if (context.EQUAL() != null) return Operation.Equal;
+            if (context.NOT_EQUAL() != null) return Operation.NotEqual;
+            if (context.GREATER_THAN() != null) return Operation.GreaterThan;
+            if (context.LESS_THAN() != null) return Operation.LessThan;
+            return Operation.None;
         }
         public override Query VisitColumn([NotNull] FUSQLParser.ColumnContext context)
         {

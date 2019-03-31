@@ -46,20 +46,54 @@ namespace FUSQL.SQLTranslate.Translator
         // Get and construct the SQL query
         private static string GetSqlString(Query query)
         {
-            // By default all queries will grab all attributes of a table
-            string command = String.Empty;
-            if (query.Command.Find != null)
+            string command = "SELECT * FROM " + query.Command.Find.From + " ";
+            if (query.Command.Find.Where != null && query.Command.Find.Where.Conditions.Count > 0)
             {
-                command = "SELECT * FROM " + query.Command.Find.From;
+                command += GetWhereCondition(query.Command.Find.Where);
             }
-            else if (query.Command.Check != null)
+            else if(query.Command.Check != null)
             {
                 command = "SELECT * FROM " + query.Command.Check.From;
             }
             return command;
         }
-
-        // Get the cluster/group count from the query 
+        private static string GetWhereCondition(Where where)
+        {
+            string whereResult = "WHERE ";
+            for (int i = 0; i < where.Conditions.Count; i++)
+            {
+                var condition = where.Conditions[i];
+                string conditionString = "{0} {1} {2} {3} ";
+                if (i > 0 && i != where.Conditions.Count)
+                {
+                    conditionString += "AND ";
+                }
+                bool hasNot = false;
+                string operation = "";
+                if (condition.Operation == Models.Enums.Operation.NotEqual)
+                {
+                    operation = "=";
+                    hasNot = true;
+                }
+                else if(condition.Operation == Models.Enums.Operation.Equal)
+                {
+                    operation = "=";
+                }
+                else if(condition.Operation == Models.Enums.Operation.GreaterThan)
+                {
+                    operation = ">";
+                }
+                else if(condition.Operation == Models.Enums.Operation.LessThan)
+                {
+                    operation = "<";
+                }
+                conditionString = string.Format(conditionString, hasNot ? "NOT" : "", condition.ColumnName,
+                    operation, condition.Value);
+                whereResult += conditionString;
+                
+            }
+            return whereResult;
+        }
         private static int TryGetClusterCount(Query query)
         {
             var result = query.Command?.Find?.Group?.Count;
