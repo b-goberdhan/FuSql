@@ -46,15 +46,20 @@ namespace FUSQL.SQLTranslate.Translator
         // Get and construct the SQL query
         private static string GetSqlString(Query query)
         {
-            string command = "SELECT * FROM " + query.Command.Find.From + " ";
-            if (query.Command.Find.Where != null && query.Command.Find.Where.Conditions.Count > 0)
+            string command = "";
+            if(query.Command.Find != null)
             {
-                command += GetWhereCondition(query.Command.Find.Where);
+                command = "SELECT * FROM " + query.Command.Find.From + " ";
+                if (query.Command.Find.Where != null && query.Command.Find.Where.Conditions.Count > 0)
+                {
+                    command += GetWhereCondition(query.Command.Find.Where);
+                }
             }
             else if(query.Command.Check != null)
             {
                 command = "SELECT * FROM " + query.Command.Check.From;
             }
+
             return command;
         }
         private static string GetWhereCondition(Where where)

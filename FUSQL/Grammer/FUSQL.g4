@@ -40,7 +40,6 @@ fragment T		: ('T'|'t') ;
 fragment L		: ('L'|'l') ;
 fragment W		: ('W'|'w') ;
 fragment H		: ('H'|'h') ;
-fragment H		: ('H'|'h') ;
 fragment K		: ('K'|'k') ;
 UPPERCASE		: [A-Z] ;
 LOWERCASE		: [a-z] ;
