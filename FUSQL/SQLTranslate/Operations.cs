@@ -13,6 +13,7 @@ namespace FUSQL.SQLTranslate
         public MiningOp MiningOp  { get; set; }
         public int ClusterCount { get; set; } = -1;
         public List<string> ClusterColumns { get; set; }
+        public string Text { get; set; }
 
         public Operation()
         {

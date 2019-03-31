@@ -1,6 +1,5 @@
 ﻿using Database.BaseDb;
-using FUSQL.Mining;
-using FUSQL.SQLTranslate.Results;
+using DataMinner.Mining;
 using System;
 using System.Collections.Generic;
 
@@ -8,7 +7,7 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
 {
     public static class BinaryClassificationExtension
     {
-        public static ResultView<TRowModel> RunBinaryClassification<TRowModel>(this Translation<TRowModel> translation, IDb db) where TRowModel : class, new()
+        public static BinaryClassificationPrediction RunBinaryClassification<TRowModel>(this Translation<TRowModel> translation, IDb db) where TRowModel : class, new()
         {
             if (translation.Operation.MiningOp != DataMinner.Mining.Enums.MiningOp.BinaryClassification)
             {
@@ -21,25 +20,15 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
             {
                 sqlResults.Add(model);
             });
-            ResultView<TRowModel> resultView = new ClusterResultView<TRowModel>(translation.Operation.MiningOp);
+            
             // Here we are doing a binary classification operation               
-           // var binaryClassifier = new BinaryClassification<TRowModel>(sqlResults);
-            // Build the model so we can begin to use and group up the data into specific clusters
-           // binaryClassifier.BuildModel(translation.Operation.ClusterColumns.ToArray());
-            int cluster = 1;
-            // Prepare the clusters so data can be added into them
-            while (cluster <= translation.Operation.ClusterCount)
-            {
-                (resultView as ClusterResultView<TRowModel>).Clusters[cluster] = new List<TRowModel>();
-                cluster++;
-            }
-            // Iterate over the results and move models into the specified clusters
-            sqlResults.ForEach((model) =>
-            {
-          //      int clusterId = Convert.ToInt32(binaryClassifier.Evaluate(model).SelectedClusterId);
-          //      (resultView as ClusterResultView<TRowModel>).Clusters[clusterId].Add(model);
-            });
-            return resultView;
+            var binaryClassifier = new BinaryClassification<TRowModel>(sqlResults);
+            // Build the model so we can begin to use and classify
+            binaryClassifier.BuildModel();
+
+            BinaryClassificationData sentiment = new BinaryClassificationData {SentimentText = translation.Operation.Text};
+            var result = binaryClassifier.Evaluate(sentiment);
+            return result;
         }
     }
 }

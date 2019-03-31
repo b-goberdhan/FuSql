@@ -44,7 +44,14 @@ namespace FUSQL
         }
         public override Query VisitFrom([NotNull] FUSQLParser.FromContext context)
         {
-            ParsedQuery.Command.Find.From = context.name().GetText();
+            if (ParsedQuery.Command.Find != null)
+            {
+                ParsedQuery.Command.Find.From = context.name().GetText();
+            }
+            else if (ParsedQuery.Command.Check != null)
+            {
+                ParsedQuery.Command.Check.From = context.name().GetText();
+            }
             return base.VisitFrom(context);
         }
         public override Query VisitColumn([NotNull] FUSQLParser.ColumnContext context)
@@ -53,6 +60,15 @@ namespace FUSQL
             command.Find.Group.Columns.Add(context.GetText());
             return base.VisitColumn(context);
         }
-
+        public override Query VisitString([NotNull] FUSQLParser.StringContext context)
+        {
+            ParsedQuery.Command.Check.Text = context.GetText();
+            return base.VisitString(context);
+        }
+        public override Query VisitCheck([NotNull] FUSQLParser.CheckContext context)
+        {
+            ParsedQuery.Command.Check = new Check();
+            return base.VisitCheck(context);
+        }
     }
 }

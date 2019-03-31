@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace FUSQL.Models
 {
-    public class Command
+    public class Check
     {
-       public Find Find { get; set; }
-       public Check Check { get; set; }
+        public string From { get; set; }
+        public string Text { get; set; }
     }
 }
