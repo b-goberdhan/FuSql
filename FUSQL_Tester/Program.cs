@@ -36,13 +36,13 @@ namespace FUSQL_Tester
                 db.Connect();
 
                 // Setup a tokenizer, parser, and SQL converter
-                // var handler = new FUSQLHandler();
-                // var query = handler.ParseQuery("");
-                // var translation = Translator.TranslateQuery<Iris>(query);
-                // var resultView = translation.RunClustering(db);
+                var handler = new FUSQLHandler();
+                var query = handler.ParseQuery("CHECK 'PRETTY GOOD!' FROM imdblabelled\n");
+                var translation = Translator.TranslateQuery<Text>(query);
+                var result = translation.RunBinaryClassification(db);
 
-                var resultView = new BinaryClassification();
-                resultView.BuildModel();
+                Console.WriteLine($"Sentiment: {translation.Operation.Text} | Prediction: {(Convert.ToBoolean(result.Prediction) ? "Positive" : "Negative")} | Probability: {result.Probability} ");
+                Console.ReadLine();
             }
             else if(userInput == "MC")
             {
@@ -122,4 +122,9 @@ namespace FUSQL_Tester
         public string Species { get; set; }
     }
 
+    class Text
+    {
+        public string SentimentText { get; set; }
+        public bool Sentiment { get; set; }
+    }
 }

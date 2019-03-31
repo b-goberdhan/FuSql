@@ -11,5 +11,6 @@ namespace FUSQL.Models
     {
         public Find Find { get; set; }
         public Get Get { get; set; } = Get.None;
+        public Check Check { get; set; }
     }
 }

@@ -15,8 +15,15 @@ namespace FUSQL.SQLTranslate.Translator
             Operation operation = new Operation();
             operation.MiningOp = GetMiningOp(query);
             operation.SQLCommand = GetSqlString(query);
-            operation.ClusterCount = TryGetClusterCount(query);
-            operation.ClusterColumns = TryGetClusterColumns(query);
+            if (operation.MiningOp.Equals(MiningOp.Clustering))
+            {
+                operation.ClusterCount = TryGetClusterCount(query);
+                operation.ClusterColumns = TryGetClusterColumns(query);
+            }
+            else if (operation.MiningOp.Equals(MiningOp.BinaryClassification))
+            {
+                operation.Text = TryGetBinaryClassificationText(query);
+            }
             return new Translation<TRowModel>(operation);
         }
 
@@ -29,17 +36,30 @@ namespace FUSQL.SQLTranslate.Translator
             {
                 return MiningOp.Clustering;
             }
+            else if (query.Command.Check != null)
+            {
+                return MiningOp.BinaryClassification;
+            }
             return MiningOp.None;
         }
 
         // Get and construct the SQL query
         private static string GetSqlString(Query query)
         {
-            string command = "SELECT * FROM " + query.Command.Find.From + " ";
-            if (query.Command.Find.Where != null && query.Command.Find.Where.Conditions.Count > 0)
+            string command = "";
+            if(query.Command.Find != null)
             {
-                command += GetWhereCondition(query.Command.Find.Where);
+                command = "SELECT * FROM " + query.Command.Find.From + " ";
+                if (query.Command.Find.Where != null && query.Command.Find.Where.Conditions.Count > 0)
+                {
+                    command += GetWhereCondition(query.Command.Find.Where);
+                }
             }
+            else if(query.Command.Check != null)
+            {
+                command = "SELECT * FROM " + query.Command.Check.From;
+            }
+
             return command;
         }
         private static string GetWhereCondition(Where where)
@@ -96,6 +116,13 @@ namespace FUSQL.SQLTranslate.Translator
         private static List<string> TryGetClusterColumns(Query query)
         {
             var result = query.Command?.Find?.Group?.Columns;
+            return result;
+        }
+
+        // Get the text
+        private static string TryGetBinaryClassificationText(Query query)
+        {
+            var result = query.Command?.Check?.Text;
             return result;
         }
     }

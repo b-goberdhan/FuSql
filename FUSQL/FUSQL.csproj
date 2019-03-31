@@ -55,8 +55,9 @@
     <Compile Include="Grammer\FUSQL.g4.parser.cs">
       <DependentUpon>FUSQL.g4</DependentUpon>
     </Compile>
-    <Compile Include="Models\Condition.cs" />
+    <Compile Include="Models\Check.cs" />
     <Compile Include="Models\Command.cs" />
+    <Compile Include="Models\Condition.cs" />
     <Compile Include="Models\Enums\Operation.cs" />
     <Compile Include="Models\Find.cs" />
     <Compile Include="Models\Enums\Get.cs" />

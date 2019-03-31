@@ -4,10 +4,11 @@ namespace DataMinner.Mining
 {
     public class BinaryClassificationData
     {
-        [LoadColumn(0)]
+        //[LoadColumn(0)]
         public string SentimentText;
 
-        [LoadColumn(1), ColumnName("Label")]
+        //[LoadColumn(1), ColumnName("Label")]
+        [ColumnName("Label")]
         public bool Sentiment;
     }
 }
