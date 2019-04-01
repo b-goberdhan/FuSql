@@ -64,6 +64,10 @@ namespace FUSQL
             {
                 ParsedQuery.Command.Check.From = context.name().GetText();
             }
+            else if (ParsedQuery.Command.Identify != null)
+            {
+                ParsedQuery.Command.Identify.From = context.name().GetText();
+            }
             return base.VisitFrom(context);
         }
         public override Query VisitWhere([NotNull] FUSQLParser.WhereContext context)
@@ -97,13 +101,34 @@ namespace FUSQL
         }
         public override Query VisitString([NotNull] FUSQLParser.StringContext context)
         {
-            ParsedQuery.Command.Check.Text = context.GetText();
+            if(ParsedQuery.Command.Check != null)
+            {
+                ParsedQuery.Command.Check.Text = context.GetText();
+            }
+            else if (ParsedQuery.Command.Identify != null)
+            {
+                if (ParsedQuery.Command.Identify.Title == null)
+                {
+                    ParsedQuery.Command.Identify.Title = context.GetText();
+                }
+                else
+                {
+                    ParsedQuery.Command.Identify.Description = context.GetText();
+                }
+                
+            }
+            
             return base.VisitString(context);
         }
         public override Query VisitCheck([NotNull] FUSQLParser.CheckContext context)
         {
             ParsedQuery.Command.Check = new Check();
             return base.VisitCheck(context);
+        }
+        public override Query VisitIdentify([NotNull] FUSQLParser.IdentifyContext context)
+        {
+            ParsedQuery.Command.Identify = new Identify();
+            return base.VisitIdentify(context);
         }
     }
 }

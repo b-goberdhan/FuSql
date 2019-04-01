@@ -2,7 +2,7 @@
 
 namespace DataMinner.Mining
 {
-    class MulticlassClassificationPrediction
+    public class MulticlassClassificationPrediction
     {
         [ColumnName("PredictedLabel")]
         public string Area;

@@ -231,6 +231,9 @@
     <None Include="issues_train.tsv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="multiclass.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="packages.config" />
     <None Include="training.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

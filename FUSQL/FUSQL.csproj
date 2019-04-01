@@ -62,6 +62,7 @@
     <Compile Include="Models\Find.cs" />
     <Compile Include="Models\Enums\Get.cs" />
     <Compile Include="Models\Group.cs" />
+    <Compile Include="Models\Identify.cs" />
     <Compile Include="Models\Query.cs" />
     <Compile Include="Models\Where.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -70,6 +71,7 @@
     <Compile Include="SQLTranslate\Results\ResultView.cs" />
     <Compile Include="SQLTranslate\Translator\Extensions\BinaryClassificationExtension.cs" />
     <Compile Include="SQLTranslate\Translator\Extensions\ClusteringExtension.cs" />
+    <Compile Include="SQLTranslate\Translator\Extensions\MulticlassClassificationExtension.cs" />
     <Compile Include="SQLTranslate\Translator\Translation.cs" />
     <Compile Include="SQLTranslate\Translator\Translator.cs" />
   </ItemGroup>

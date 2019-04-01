@@ -2,7 +2,7 @@
 
 namespace DataMinner.Mining
 {
-    class MulticlassClassificationData
+    public class MulticlassClassificationData
     {
         [LoadColumn(0)]
         public string ID { get; set; }

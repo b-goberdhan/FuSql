@@ -47,16 +47,29 @@ namespace FUSQL_Tester
             else if(userInput == "MC")
             {
                 Console.WriteLine("MC selected");
-
+                // Connect to the multiclass classification DB
+                var path = Path.GetFullPath("./multiclass.db");
+                var db = new SqliteDb(path);
+                db.Connect();
 
                 // Setup a tokenizer, parser, and SQL converter
-                // var handler = new FUSQLHandler();
-                // var query = handler.ParseQuery("");
-                // var translation = Translator.TranslateQuery<Iris>(query);
-                // var resultView = translation.RunClustering(db);
+                var handler = new FUSQLHandler();
+                var query = handler.ParseQuery("IDENTIFY '404 error not found' 'Cant find webpage!' FROM issuestrain\n");
+                var translation = Translator.TranslateQuery<IssueDesc>(query);
+                var result = translation.RunMulticlassClassification(db);
 
-                var resultView = new MulticlassClassification();
-                resultView.BuildModel();
+                //var resultView = new MulticlassClassification();
+                //resultView.BuildModel();
+
+                //MulticlassClassificationData issue = new MulticlassClassificationData()
+                //{
+                //    Title = "WebSockets communication is slow in my machine",
+                //    Description = "The WebSockets communication used under the covers by SignalR looks like is going slow in my development machine.."
+                //};
+
+                Console.WriteLine($"=============== Single Prediction just-trained-model - Result: {result.Area} ===============");
+
+                Console.ReadLine();
             }
             else if(userInput == "C")
             {
@@ -126,5 +139,13 @@ namespace FUSQL_Tester
     {
         public string SentimentText { get; set; }
         public bool Sentiment { get; set; }
+    }
+
+    class IssueDesc
+    {
+        public string ID { get; set; }
+        public string Area { get; set; }
+        public string Title { get; set; }
+        public string Description { get; set; }
     }
 }

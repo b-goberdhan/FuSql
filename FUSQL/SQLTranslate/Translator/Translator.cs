@@ -24,6 +24,12 @@ namespace FUSQL.SQLTranslate.Translator
             {
                 operation.Text = TryGetBinaryClassificationText(query);
             }
+            else if (operation.MiningOp.Equals(MiningOp.MultiClassification))
+            {
+                Console.WriteLine("MulticlassClassification!");
+                operation.Title = TryGetMulticlassClassificationIssue(query);
+                operation.Description = TryGetMulticlassClassificationDesc(query);
+            }
             return new Translation<TRowModel>(operation);
         }
 
@@ -39,6 +45,10 @@ namespace FUSQL.SQLTranslate.Translator
             else if (query.Command.Check != null)
             {
                 return MiningOp.BinaryClassification;
+            }
+            else if (query.Command.Identify != null)
+            {
+                return MiningOp.MultiClassification;
             }
             return MiningOp.None;
         }
@@ -58,6 +68,10 @@ namespace FUSQL.SQLTranslate.Translator
             else if(query.Command.Check != null)
             {
                 command = "SELECT * FROM " + query.Command.Check.From;
+            }
+            else if(query.Command.Identify != null)
+            {
+                command = "SELECT * FROM " + query.Command.Identify.From;
             }
 
             return command;
@@ -123,6 +137,20 @@ namespace FUSQL.SQLTranslate.Translator
         private static string TryGetBinaryClassificationText(Query query)
         {
             var result = query.Command?.Check?.Text;
+            return result;
+        }
+
+        // Get the issue text
+        private static string TryGetMulticlassClassificationIssue(Query query)
+        {
+            var result = query.Command?.Identify?.Title;
+            return result;
+        }
+
+        // Get the issue description
+        private static string TryGetMulticlassClassificationDesc(Query query)
+        {
+            var result = query.Command?.Identify?.Description;
             return result;
         }
     }

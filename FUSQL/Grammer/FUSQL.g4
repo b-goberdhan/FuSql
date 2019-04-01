@@ -3,7 +3,7 @@ grammar FUSQL;
  * Parser Rules
  */
  query			: command NEWLINE ;
- command		: (find) | (check) ;
+ command		: (find) | (check) | (identify) ;
  find			: FIND groups from ;
  groups			: number GROUPS name USING (column)+ ; // Groups in this case is analogus to clusters
  from			: FROM name ;
@@ -18,6 +18,7 @@ grammar FUSQL;
  value			: TEXT | NUMBER ;
  string			: STRING;
  check			: CHECK string from ;
+ identify		: IDENTIFY string string from ;
 
 /*
  * Lexer Rules
@@ -41,6 +42,7 @@ fragment L		: ('L'|'l') ;
 fragment W		: ('W'|'w') ;
 fragment H		: ('H'|'h') ;
 fragment K		: ('K'|'k') ;
+fragment Y		: ('Y'|'y') ;
 UPPERCASE		: [A-Z] ;
 LOWERCASE		: [a-z] ;
 EQUAL			: '=' ;
@@ -57,6 +59,7 @@ INFO			: I N F O ;
 USING			: U S I N G ;
 FIND			: F I N D ;
 CHECK			: C H E C K ;
+IDENTIFY		: I D E N T I F Y ;
 AND				: A N D ;
 OR				: O R ;
 WORD			: (UPPERCASE | LOWERCASE)+ ;
