@@ -5,10 +5,12 @@ namespace DataMinner.Mining
     public class BinaryClassificationData
     {
         //[LoadColumn(0)]
-        public string SentimentText;
+        public string Description;
+
+        public string DescriptionTable;
 
         //[LoadColumn(1), ColumnName("Label")]
         [ColumnName("Label")]
-        public bool Sentiment;
+        public string GoalTable;
     }
 }

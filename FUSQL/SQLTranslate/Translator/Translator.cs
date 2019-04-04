@@ -22,13 +22,16 @@ namespace FUSQL.SQLTranslate.Translator
             }
             else if (operation.MiningOp.Equals(MiningOp.BinaryClassification))
             {
-                operation.Text = TryGetBinaryClassificationText(query);
+                operation.Description = TryGetBinaryClassificationDescription(query);
+                operation.DescriptionTable = TryGetBinaryClassificationDescriptionTable(query);
+                operation.GoalTable = TryGetBinaryClassificationGoalTable(query);
             }
             else if (operation.MiningOp.Equals(MiningOp.MultiClassification))
             {
                 Console.WriteLine("MulticlassClassification!");
-                operation.Title = TryGetMulticlassClassificationIssue(query);
-                operation.Description = TryGetMulticlassClassificationDesc(query);
+                operation.Description = TryGetMulticlassClassificationDescription(query);
+                operation.DescriptionTable = TryGetMulticlassClassificationDescriptionTable(query);
+                operation.GoalTable = TryGetMulticlassClassificationGoalTable(query);
             }
             return new Translation<TRowModel>(operation);
         }
@@ -134,23 +137,43 @@ namespace FUSQL.SQLTranslate.Translator
         }
 
         // Get the text
-        private static string TryGetBinaryClassificationText(Query query)
+        private static string TryGetBinaryClassificationDescription(Query query)
         {
-            var result = query.Command?.Check?.Text;
+            var result = query.Command?.Check?.Description;
+            return result;
+        }
+
+        // Get the text
+        private static string TryGetBinaryClassificationDescriptionTable(Query query)
+        {
+            var result = query.Command?.Check?.DescriptionTable;
+            return result;
+        }
+
+        // Get the text
+        private static string TryGetBinaryClassificationGoalTable(Query query)
+        {
+            var result = query.Command?.Check?.GoalTable;
             return result;
         }
 
         // Get the issue text
-        private static string TryGetMulticlassClassificationIssue(Query query)
+        private static string TryGetMulticlassClassificationDescription(Query query)
         {
-            var result = query.Command?.Identify?.Title;
+            var result = query.Command?.Identify?.Description;
             return result;
         }
 
         // Get the issue description
-        private static string TryGetMulticlassClassificationDesc(Query query)
+        private static string TryGetMulticlassClassificationDescriptionTable(Query query)
         {
-            var result = query.Command?.Identify?.Description;
+            var result = query.Command?.Identify?.DescriptionTable;
+            return result;
+        }
+
+        private static string TryGetMulticlassClassificationGoalTable(Query query)
+        {
+            var result = query.Command?.Identify?.GoalTable;
             return result;
         }
     }

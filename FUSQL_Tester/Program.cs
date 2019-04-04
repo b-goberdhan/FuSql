@@ -30,44 +30,49 @@ namespace FUSQL_Tester
             if(userInput == "BC")
             {
                 Console.WriteLine("BC selected");
-                // Connect to the binary classification DB
-                var path = Path.GetFullPath("./binaryclassification.db"); 
+                var path = Path.GetFullPath("./drugs.db");
                 var db = new SqliteDb(path);
                 db.Connect();
 
                 // Setup a tokenizer, parser, and SQL converter
                 var handler = new FUSQLHandler();
-                var query = handler.ParseQuery("CHECK 'PRETTY GOOD!' FROM imdblabelled\n");
-                var translation = Translator.TranslateQuery<Text>(query);
+                var query = handler.ParseQuery("CHECK FOR sideEffects USING 'Perfectly fine no problems!' WITH sideEffectsReview FROM drugLibTrain\n");
+                //var query = handler.ParseQuery("CHECK FOR rating USING 'accutane' WITH urlDrugName FROM drugLibTrain\n");
+                //var query = handler.ParseQuery("CHECK 'In pain and want to die' WITH commentsReview AND rating FROM drugLibTrain\n");
+                var translation = Translator.TranslateQuery<DrugIssues>(query);
                 var result = translation.RunBinaryClassification(db);
 
-                Console.WriteLine($"Sentiment: {translation.Operation.Text} | Prediction: {(Convert.ToBoolean(result.Prediction) ? "Positive" : "Negative")} | Probability: {result.Probability} ");
+                Console.WriteLine($"Sentiment: {translation.Operation.Description} | Prediction: {(Convert.ToBoolean(result.Prediction) ? "Positive" : "Negative")} | Probability: {result.Probability} ");
                 Console.ReadLine();
             }
             else if(userInput == "MC")
             {
                 Console.WriteLine("MC selected");
                 // Connect to the multiclass classification DB
-                var path = Path.GetFullPath("./multiclass.db");
+                //var path = Path.GetFullPath("./multiclass.db");
+                //var db = new SqliteDb(path);
+                //db.Connect();
+
+                //// Setup a tokenizer, parser, and SQL converter
+                //var handler = new FUSQLHandler();
+                //var query = handler.ParseQuery("IDENTIFY '404 error not found' 'Cant find webpage!' FROM issuestrain\n");
+                //var translation = Translator.TranslateQuery<IssueDesc>(query);
+                //var result = translation.RunMulticlassClassification(db);
+
+                //Console.WriteLine($"=============== Single Prediction just-trained-model - Result: {result.Area} ===============");
+
+                var path = Path.GetFullPath("./drugs.db");
                 var db = new SqliteDb(path);
                 db.Connect();
 
                 // Setup a tokenizer, parser, and SQL converter
                 var handler = new FUSQLHandler();
-                var query = handler.ParseQuery("IDENTIFY '404 error not found' 'Cant find webpage!' FROM issuestrain\n");
+                var query = handler.ParseQuery("IDENTIFY sideEffects USING 'accutane' WITH sideEffectsReview FROM drugLibTrain\n");
                 var translation = Translator.TranslateQuery<IssueDesc>(query);
                 var result = translation.RunMulticlassClassification(db);
 
-                //var resultView = new MulticlassClassification();
-                //resultView.BuildModel();
-
-                //MulticlassClassificationData issue = new MulticlassClassificationData()
-                //{
-                //    Title = "WebSockets communication is slow in my machine",
-                //    Description = "The WebSockets communication used under the covers by SignalR looks like is going slow in my development machine.."
-                //};
-
-                Console.WriteLine($"=============== Single Prediction just-trained-model - Result: {result.Area} ===============");
+                // what is the value of result.Area?
+                //Console.WriteLine($"Sentiment: {translation.Operation.Description} | Prediction: {result.Area} | Probability: {result.Probability} ");
 
                 Console.ReadLine();
             }
@@ -135,17 +140,37 @@ namespace FUSQL_Tester
         public string Species { get; set; }
     }
 
-    class Text
+    class DrugIssues
     {
-        public string SentimentText { get; set; }
-        public bool Sentiment { get; set; }
+        public string sideEffects { get; set; }
+        public string Description { get { return sideEffects; } }
+        public string sideEffectsReview { get; set; }
+        [ColumnName("Label")]
+        public bool GoalTable { get; set; }
+
+        //public int rating { get; set; }
+        //public string urlDrugName { get; set; }
+        //[ColumnName("Label")]
+        //public bool GoalTable { get; set; }
+
+        //public string commentsReview { get; set; }
+        //public string sideEffects { get; set; }
+        //public string Description { get { return commentsReview; } }
+        //public string sideEffectsReview { get; set; }
+        //[ColumnName("Label")]
+        //public int rating { get; set; }
     }
 
     class IssueDesc
     {
-        public string ID { get; set; }
-        public string Area { get; set; }
-        public string Title { get; set; }
+        public string sideEffects { get; set; }
+        public string sideEffectsReview { get; set; }
+        //public string Area { get; set; }
         public string Description { get; set; }
+        [VectorType(3107)]
+        public string[] DescriptionTable { get; set; }
+        public string GoalTable { get; set; }
+        [ColumnName("Label")]
+        public float Label;
     }
 }

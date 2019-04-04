@@ -23,12 +23,18 @@ namespace DataMinner.Mining
         public void BuildModel()
         {
             // Template code taken from: https://github.com/dotnet/samples/blob/master/machine-learning/tutorials/GitHubIssueClassification/Program.cs
-            TrainCatalogBase.TrainTestData splitDataView = _mlContext.MulticlassClassification.TrainTestSplit(_dataView, testFraction: 0.2);
+            var splitDataView = _mlContext.MulticlassClassification.TrainTestSplit(_dataView, testFraction: 0.2);
 
-            var pipeline = _mlContext.Transforms.Conversion.MapValueToKey(inputColumnName: "Area", outputColumnName: "Label")
-            .Append(_mlContext.Transforms.Text.FeaturizeText(inputColumnName: "Title", outputColumnName: "TitleFeaturized"))
-            .Append(_mlContext.Transforms.Text.FeaturizeText(inputColumnName: "Description", outputColumnName: "DescriptionFeaturized"))
-            .Append(_mlContext.Transforms.Concatenate("Features", "TitleFeaturized", "DescriptionFeaturized"))
+            //var pipeline = _mlContext.Transforms.Conversion.MapValueToKey(inputColumnName: "Area", outputColumnName: "Label")
+            //.Append(_mlContext.Transforms.Text.FeaturizeText(inputColumnName: "DescriptionTable", outputColumnName: "DescriptionTableFeaturized"))
+            //.Append(_mlContext.Transforms.Text.FeaturizeText(inputColumnName: "GoalTable", outputColumnName: "GoalTableFeaturized"))
+            //.Append(_mlContext.Transforms.Concatenate("Features", "DescriptionTableFeaturized", "GoalTableFeaturized"))
+            //.AppendCacheCheckpoint(_mlContext);
+
+            var pipeline = _mlContext.Transforms.Conversion.MapValueToKey(inputColumnName: "GoalTable", outputColumnName: "Label")
+            .Append(_mlContext.Transforms.Text.FeaturizeText(inputColumnName: "DescriptionTable", outputColumnName: "DescriptionTableFeaturized"))
+            //_mlContext.Transforms.Text.FeaturizeText(outputColumnName: DefaultColumnNames.Features, inputColumnName: nameof(BinaryClassificationData.Description));
+            .Append(_mlContext.Transforms.Concatenate("Features", "DescriptionTableFeaturized"))
             .AppendCacheCheckpoint(_mlContext);
 
             var trainingPipeline = pipeline.Append(_mlContext.MulticlassClassification.Trainers.StochasticDualCoordinateAscent(DefaultColumnNames.Label, DefaultColumnNames.Features))

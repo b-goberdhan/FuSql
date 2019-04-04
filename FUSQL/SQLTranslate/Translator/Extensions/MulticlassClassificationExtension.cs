@@ -26,7 +26,7 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
             // Build the model so we can begin to use and classify
             multiclassClassifier.BuildModel();
 
-            MulticlassClassificationData problem = new MulticlassClassificationData { Title = translation.Operation.Title, Description = translation.Operation.Description };
+            MulticlassClassificationData problem = new MulticlassClassificationData { Description = translation.Operation.Description };
             var result = multiclassClassifier.Evaluate(problem);
             return result;
         }

@@ -222,6 +222,9 @@
     <None Include="database.sqlite">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="drugs.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Groceries_dataset.csv">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
