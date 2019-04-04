@@ -35,7 +35,7 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
                 {
                     Description = d
                 });
-                Console.WriteLine(result.sideEffects);
+                Console.WriteLine(result.GoalTable);
 
             }
             //var result = 
