@@ -36,8 +36,8 @@ namespace FUSQL_Tester
 
                 // Setup a tokenizer, parser, and SQL converter
                 var handler = new FUSQLHandler();
-                var query = handler.ParseQuery("CHECK FOR sideEffects USING 'Perfectly fine no problems!' WITH sideEffectsReview FROM drugLibTrain\n");
-                //var query = handler.ParseQuery("CHECK FOR rating USING 'accutane' WITH urlDrugName FROM drugLibTrain\n");
+                //var query = handler.ParseQuery("CHECK FOR sideEffects USING 'Perfectly fine no problems!' WITH sideEffectsReview FROM drugLibTrain\n");
+                var query = handler.ParseQuery("CHECK FOR rating USING 'Perfectly fine no problems!' WITH commentsReview FROM drugLibTrain\n");
                 //var query = handler.ParseQuery("CHECK 'In pain and want to die' WITH commentsReview AND rating FROM drugLibTrain\n");
                 var translation = Translator.TranslateQuery<DrugIssues>(query);
                 var result = translation.RunBinaryClassification(db);
@@ -67,12 +67,13 @@ namespace FUSQL_Tester
 
                 // Setup a tokenizer, parser, and SQL converter
                 var handler = new FUSQLHandler();
-                var query = handler.ParseQuery("IDENTIFY sideEffects USING 'accutane' WITH sideEffectsReview FROM drugLibTrain\n");
+                var query = handler.ParseQuery("IDENTIFY sideEffects USING 'aadfsdfhgjhdrseasdgfchgv' WITH sideEffectsReview FROM drugLibTrain\n");
                 var translation = Translator.TranslateQuery<IssueDesc>(query);
                 var result = translation.RunMulticlassClassification(db);
 
                 // what is the value of result.Area?
-                //Console.WriteLine($"Sentiment: {translation.Operation.Description} | Prediction: {result.Area} | Probability: {result.Probability} ");
+                //Console.WriteLine($"Sentiment: {translation.Operation.Description} | Prediction: {result.GoalTable} | Probability: {result.Probability} ");
+                Console.WriteLine($"Sentiment: {translation.Operation.Description} | Prediction: {result.GoalTable}");
 
                 Console.ReadLine();
             }
@@ -142,14 +143,15 @@ namespace FUSQL_Tester
 
     class DrugIssues
     {
-        public string sideEffects { get; set; }
-        public string Description { get { return sideEffects; } }
-        public string sideEffectsReview { get; set; }
-        [ColumnName("Label")]
-        public bool GoalTable { get; set; }
+        //public string sideEffects { get; set; }
+        //public string Description { get { return sideEffects; } }
+        //public string sideEffectsReview { get; set; }
+        //[ColumnName("Label")]
+        //public bool GoalTable { get; set; }
 
-        //public int rating { get; set; }
-        //public string urlDrugName { get; set; }
+        [ColumnName("Label")]
+        public int rating { get; set; }
+        public string commentsReview { get; set; }
         //[ColumnName("Label")]
         //public bool GoalTable { get; set; }
 
@@ -165,12 +167,8 @@ namespace FUSQL_Tester
     {
         public string sideEffects { get; set; }
         public string sideEffectsReview { get; set; }
-        //public string Area { get; set; }
-        public string Description { get; set; }
-        [VectorType(3107)]
-        public string[] DescriptionTable { get; set; }
-        public string GoalTable { get; set; }
-        [ColumnName("Label")]
-        public float Label;
+        //public string DescriptionTable { get; set; }
+        public string DescriptionTable { get { return sideEffectsReview; } }
+        public string GoalTable { get { return sideEffects; } }
     }
 }

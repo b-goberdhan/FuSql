@@ -6,7 +6,5 @@ namespace DataMinner.Mining
     {
         [ColumnName("PredictedLabel")]
         public string GoalTable;
-
-        //public float Probability { get; set; }
     }
 }

@@ -22,7 +22,7 @@ namespace DataMinner.Mining
         {
             // Randomly split the dataset by a val. One for training and the other to test the trained model against
             TrainCatalogBase.TrainTestData splitDataView = _mlContext.BinaryClassification.TrainTestSplit(_dataView, testFraction: 0.2);
-            var dataProcessPipeline = _mlContext.Transforms.Text.FeaturizeText(outputColumnName: DefaultColumnNames.Features, inputColumnName: nameof(BinaryClassificationData.Description));
+            var dataProcessPipeline = _mlContext.Transforms.Text.FeaturizeText(outputColumnName: DefaultColumnNames.Features, inputColumnName: "commentsReview");
             var trainer = _mlContext.BinaryClassification.Trainers.FastTree(labelColumnName: DefaultColumnNames.Label, featureColumnName: DefaultColumnNames.Features);
             var pipeline = dataProcessPipeline.Append(trainer);
             ITransformer trainedModel = pipeline.Fit(splitDataView.TrainSet);

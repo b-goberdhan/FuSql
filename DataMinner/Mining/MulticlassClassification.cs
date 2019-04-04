@@ -33,7 +33,6 @@ namespace DataMinner.Mining
 
             var pipeline = _mlContext.Transforms.Conversion.MapValueToKey(inputColumnName: "GoalTable", outputColumnName: "Label")
             .Append(_mlContext.Transforms.Text.FeaturizeText(inputColumnName: "DescriptionTable", outputColumnName: "DescriptionTableFeaturized"))
-            //_mlContext.Transforms.Text.FeaturizeText(outputColumnName: DefaultColumnNames.Features, inputColumnName: nameof(BinaryClassificationData.Description));
             .Append(_mlContext.Transforms.Concatenate("Features", "DescriptionTableFeaturized"))
             .AppendCacheCheckpoint(_mlContext);
 
@@ -42,6 +41,7 @@ namespace DataMinner.Mining
 
             var _trainedModel = trainingPipeline.Fit(splitDataView.TrainSet);
             _predEngine = _trainedModel.CreatePredictionEngine<MulticlassClassificationData, MulticlassClassificationPrediction>(_mlContext);
+            var CUNT = _mlContext.MulticlassClassification.Evaluate(_trainedModel.Transform(_dataView));
         }
 
         public MulticlassClassificationPrediction Evaluate(MulticlassClassificationData data)
