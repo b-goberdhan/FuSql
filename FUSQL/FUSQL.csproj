@@ -71,6 +71,7 @@
     <Compile Include="SQLTranslate\Results\ResultView.cs" />
     <Compile Include="SQLTranslate\Translator\Extensions\BinaryClassificationExtension.cs" />
     <Compile Include="SQLTranslate\Translator\Extensions\ClusteringExtension.cs" />
+    <Compile Include="SQLTranslate\Translator\Extensions\DataMiningExtension.cs" />
     <Compile Include="SQLTranslate\Translator\Extensions\MulticlassClassificationExtension.cs" />
     <Compile Include="SQLTranslate\Translator\Translation.cs" />
     <Compile Include="SQLTranslate\Translator\Translator.cs" />

@@ -7,7 +7,7 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
 {
     public static class MulticlassClassificationExtension
     {
-        public static MulticlassClassificationPrediction RunMulticlassClassification<TRowModel>(this Translation<TRowModel> translation, IDb db) where TRowModel : class, new()
+        public static MulticlassClassification<TRowModel> RunMulticlassClassification<TRowModel>(this Translation<TRowModel> translation, IDb db) where TRowModel : class, new()
         {
             if (translation.Operation.MiningOp != DataMinner.Mining.Enums.MiningOp.MultiClassification)
             {
@@ -28,18 +28,8 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
 
             MulticlassClassificationData problem = new MulticlassClassificationData {
                 Description = translation.Operation.Description };
-            while (true)
-            {
-                string d = Console.ReadLine();
-                var result = multiclassClassifier.Evaluate(new MulticlassClassificationData()
-                {
-                    Description = d
-                });
-                Console.WriteLine(result.GoalTable);
 
-            }
-            //var result = 
-            return null;
+            return multiclassClassifier;
         }
     }
 }

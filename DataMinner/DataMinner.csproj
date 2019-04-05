@@ -101,7 +101,6 @@
     <Compile Include="Mining\BinaryClassification.cs" />
     <Compile Include="Mining\BinaryClassificationData.cs" />
     <Compile Include="Mining\BinaryClassificationPrediction.cs" />
-    <Compile Include="Mining\BinaryClassificationV2.cs" />
     <Compile Include="Mining\Clustering.cs" />
     <Compile Include="Mining\ClusterPrediction.cs" />
     <Compile Include="Mining\Enums\MiningOp.cs" />

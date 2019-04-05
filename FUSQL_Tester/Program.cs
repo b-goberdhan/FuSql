@@ -70,12 +70,21 @@ namespace FUSQL_Tester
                 var query = handler.ParseQuery("IDENTIFY sideEffects USING 'aadfsdfhgjhdrseasdgfchgv' WITH sideEffectsReview FROM drugLibTrain\n");
                 var translation = Translator.TranslateQuery<IssueDesc>(query);
                 var result = translation.RunMulticlassClassification(db);
-
+               
                 // what is the value of result.Area?
-                //Console.WriteLine($"Sentiment: {translation.Operation.Description} | Prediction: {result.GoalTable} | Probability: {result.Probability} ");
-                Console.WriteLine($"Sentiment: {translation.Operation.Description} | Prediction: {result.GoalTable}");
+                while(true)
+                {
+                    Console.WriteLine("enter description");
+                    var eval = result.Evaluate(new IssueDesc()
+                    {
+                        sideEffectsReview = Console.ReadLine()
+                    });
+                    Console.WriteLine($"Prediction: {eval.GoalTable}");
 
-                Console.ReadLine();
+                    
+                }
+                //Console.WriteLine($"Sentiment: {translation.Operation.Description} | Prediction: {result.GoalTable} | Probability: {result.Probability} ");
+               
             }
             else if(userInput == "C")
             {

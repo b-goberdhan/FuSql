@@ -1,6 +1,7 @@
 ﻿using Microsoft.Data.DataView;
 using Microsoft.ML;
 using Microsoft.ML.Data;
+using Microsoft.ML.Transforms;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,6 +12,7 @@ namespace DataMinner.Mining
     {
         private readonly MLContext _mlContext;
         private IDataView _dataView;
+        private TransformerChain<KeyToValueMappingTransformer> _transformers;
         private PredictionEngine<MulticlassClassificationData, MulticlassClassificationPrediction> _predEngine;
 
         public MulticlassClassification(IEnumerable<TRowModel> rows)
@@ -33,19 +35,24 @@ namespace DataMinner.Mining
 
             var pipeline = _mlContext.Transforms.Conversion.MapValueToKey(inputColumnName: "GoalTable", outputColumnName: "Label")
             .Append(_mlContext.Transforms.Text.FeaturizeText(inputColumnName: "DescriptionTable", outputColumnName: "DescriptionTableFeaturized"))
-            .Append(_mlContext.Transforms.Concatenate("Features", "DescriptionTableFeaturized"))
-            .AppendCacheCheckpoint(_mlContext);
+            .Append(_mlContext.Transforms.Concatenate("Features", "DescriptionTableFeaturized"));
 
             var trainingPipeline = pipeline.Append(_mlContext.MulticlassClassification.Trainers.StochasticDualCoordinateAscent(DefaultColumnNames.Label, DefaultColumnNames.Features))
-            .Append(_mlContext.Transforms.Conversion.MapKeyToValue("PredictedLabel"));
+                .Append(_mlContext.Transforms.Conversion.MapKeyToValue("PredictedLabel"));
 
-            var _trainedModel = trainingPipeline.Fit(splitDataView.TrainSet);
-            _predEngine = _trainedModel.CreatePredictionEngine<MulticlassClassificationData, MulticlassClassificationPrediction>(_mlContext);
-            var CUNT = _mlContext.MulticlassClassification.Evaluate(_trainedModel.Transform(_dataView));
+            _transformers = trainingPipeline.Fit(splitDataView.TrainSet);
+            //_predEngine = _trainedModel.CreatePredictionEngine<MulticlassClassificationData, MulticlassClassificationPrediction>(_mlContext);
+            //var CUNT = _mlContext.MulticlassClassification.Evaluate(_trainedModel.Transform(_dataView));
+        }
+        public void BuildModelV2()
+        {
+
+
         }
 
-        public MulticlassClassificationPrediction Evaluate(MulticlassClassificationData data)
+        public MulticlassClassificationPrediction Evaluate(TRowModel data)
         {
+            var _predEngine = _transformers.CreatePredictionEngine<TRowModel, MulticlassClassificationPrediction>(_mlContext);
             return _predEngine.Predict(data);
         }
     }
