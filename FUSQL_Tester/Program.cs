@@ -36,9 +36,7 @@ namespace FUSQL_Tester
 
                 // Setup a tokenizer, parser, and SQL converter
                 var handler = new FUSQLHandler();
-                //var query = handler.ParseQuery("CHECK FOR sideEffects USING 'Perfectly fine no problems!' WITH sideEffectsReview FROM drugLibTrain\n");
-                var query = handler.ParseQuery("CHECK FOR rating USING 'Perfectly fine no problems!' WITH commentsReview FROM drugLibTrain\n");
-                //var query = handler.ParseQuery("CHECK 'In pain and want to die' WITH commentsReview AND rating FROM drugLibTrain\n");
+                var query = handler.ParseQuery("CHECK FOR ratingEnum USING 'hate stop suffer worse shyt worsened painful' WITH commentsReview FROM drugLibTrainEnum\n");
                 var translation = Translator.TranslateQuery<DrugIssues>(query);
                 var result = translation.RunBinaryClassification(db);
 
@@ -141,7 +139,7 @@ namespace FUSQL_Tester
         public string Species { get; set; }
     }
 
-    class DrugIssues
+    public class DrugIssues
     {
         //public string sideEffects { get; set; }
         //public string Description { get { return sideEffects; } }
@@ -149,18 +147,9 @@ namespace FUSQL_Tester
         //[ColumnName("Label")]
         //public bool GoalTable { get; set; }
 
-        [ColumnName("Label")]
-        public int rating { get; set; }
         public string commentsReview { get; set; }
-        //[ColumnName("Label")]
-        //public bool GoalTable { get; set; }
-
-        //public string commentsReview { get; set; }
-        //public string sideEffects { get; set; }
-        //public string Description { get { return commentsReview; } }
-        //public string sideEffectsReview { get; set; }
-        //[ColumnName("Label")]
-        //public int rating { get; set; }
+        [ColumnName("Label")]
+        public bool ratingEnum { get; set; }
     }
 
     class IssueDesc
