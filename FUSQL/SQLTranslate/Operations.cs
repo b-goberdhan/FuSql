@@ -7,24 +7,17 @@ using System.Threading.Tasks;
 
 namespace FUSQL.SQLTranslate
 {
-    public class Operation
+    public abstract class Operation
     {
-        public string SQLCommand { get; set; }
-        public MiningOp MiningOp  { get; set; }
+        public string SQLCommand { get; private set; }
+        public MiningOp MiningOp  { get; private set; }
 
-        public int ClusterCount { get; set; } = -1;
-        public List<string> ClusterColumns { get; set; }
-
-        public string Description { get; set; }
-        public string DescriptionTable { get; set; }
-        public string GoalTable { get; set; }
-
-        public string Title { get; set; }
         //public string Description { get; set; }
 
-        public Operation()
+        public Operation(string sqlCommand, MiningOp miningOp)
         {
-
+            SQLCommand = sqlCommand;
+            MiningOp = miningOp;
         }
     }
 }

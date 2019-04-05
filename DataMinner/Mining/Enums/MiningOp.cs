@@ -12,6 +12,7 @@ namespace DataMinner.Mining.Enums
         None,
         Clustering,
         BinaryClassification,
+        BuildMultiClassification,
         MultiClassification
        
         

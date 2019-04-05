@@ -155,6 +155,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExampleQueries\ClusterQueries.cs" />
+    <Compile Include="ExampleQueries\MulticlassQueries.cs" />
     <Compile Include="Models\DrugTestModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

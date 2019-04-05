@@ -12,26 +12,42 @@ namespace FUSQL.SQLTranslate.Translator
     {
         public static Translation<TRowModel> TranslateQuery<TRowModel>(Query query) where TRowModel : class, new()
         {
-            Operation operation = new Operation();
-            operation.MiningOp = GetMiningOp(query);
-            operation.SQLCommand = GetSqlString(query);
-            if (operation.MiningOp.Equals(MiningOp.Clustering))
+            Operation operation = null;
+            var miningOp = GetMiningOp(query);
+            var sQLCommand = GetSqlString(query);
+            
+             if (miningOp == MiningOp.Clustering)
             {
-                operation.ClusterCount = TryGetClusterCount(query);
-                operation.ClusterColumns = TryGetClusterColumns(query);
+                operation = new ClusterOperation(sQLCommand)
+                {
+                    ClusterCount = TryGetClusterCount(query),
+                    ClusterColumns = TryGetClusterColumns(query)
+                };
             }
-            else if (operation.MiningOp.Equals(MiningOp.BinaryClassification))
+            else if (miningOp == MiningOp.BinaryClassification)
             {
+                
+                /*
+                operation = new 
                 operation.Description = TryGetBinaryClassificationDescription(query);
                 operation.DescriptionTable = TryGetBinaryClassificationDescriptionTable(query);
                 operation.GoalTable = TryGetBinaryClassificationGoalTable(query);
+                */
             }
-            else if (operation.MiningOp.Equals(MiningOp.MultiClassification))
+            else if (miningOp == MiningOp.MultiClassification)
             {
-                Console.WriteLine("MulticlassClassification!");
-                operation.Description = TryGetMulticlassClassificationDescription(query);
-                operation.DescriptionTable = TryGetMulticlassClassificationDescriptionTable(query);
-                operation.GoalTable = TryGetMulticlassClassificationGoalTable(query);
+                //operation.Description = TryGetMulticlassClassificationDescription(query);
+                //operation.DescriptionTable = TryGetMulticlassClassificationDescriptionTable(query);
+                //operation.GoalTable = TryGetMulticlassClassificationGoalTable(query);
+            }
+            else if (miningOp == MiningOp.BuildMultiClassification)
+            {
+                operation = new BuildClassificationOperation(sQLCommand)
+                {
+                    Goal = query.Command.Create.Mapping.GoalColumn,
+                    InputColumns = query.Command.Create.Mapping.InputColumns
+                };
+
             }
             return new Translation<TRowModel>(operation);
         }
@@ -52,6 +68,10 @@ namespace FUSQL.SQLTranslate.Translator
             else if (query.Command.Identify != null)
             {
                 return MiningOp.MultiClassification;
+            }
+            else if (query.Command.Create?.Mapping != null)
+            {
+                return MiningOp.BuildMultiClassification;
             }
             return MiningOp.None;
         }
@@ -76,7 +96,15 @@ namespace FUSQL.SQLTranslate.Translator
             {
                 command = "SELECT * FROM " + query.Command.Identify.From;
             }
-
+            else if(query.Command.Create?.Mapping != null)
+            {
+                var columns = query.Command.Create.Mapping.GoalColumn;
+                foreach (var col in query.Command.Create.Mapping.InputColumns)
+                {
+                    columns += ", " + col;
+                }
+                command = "SELECT " + columns + " FROM " + query.Command.Create.Mapping.From;
+            }
             return command;
         }
         private static string GetWhereCondition(Where where)

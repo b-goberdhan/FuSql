@@ -55,9 +55,12 @@
     <Compile Include="Grammer\FUSQL.g4.parser.cs">
       <DependentUpon>FUSQL.g4</DependentUpon>
     </Compile>
+    <Compile Include="InternalModels\FusqlInternal.cs" />
     <Compile Include="Models\Check.cs" />
     <Compile Include="Models\Command.cs" />
     <Compile Include="Models\Condition.cs" />
+    <Compile Include="Models\Create\Create.cs" />
+    <Compile Include="Models\Create\Mapping.cs" />
     <Compile Include="Models\Enums\Operation.cs" />
     <Compile Include="Models\Find.cs" />
     <Compile Include="Models\Enums\Get.cs" />
@@ -66,10 +69,13 @@
     <Compile Include="Models\Query.cs" />
     <Compile Include="Models\Where.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SQLTranslate\BuildClassificationOperation.cs" />
+    <Compile Include="SQLTranslate\ClusterOperation.cs" />
     <Compile Include="SQLTranslate\Operations.cs" />
     <Compile Include="SQLTranslate\Results\ClusterResultView.cs" />
     <Compile Include="SQLTranslate\Results\ResultView.cs" />
     <Compile Include="SQLTranslate\Translator\Extensions\BinaryClassificationExtension.cs" />
+    <Compile Include="SQLTranslate\Translator\Extensions\MultiClassificationExtension.cs" />
     <Compile Include="SQLTranslate\Translator\Extensions\ClusteringExtension.cs" />
     <Compile Include="SQLTranslate\Translator\Extensions\DataMiningExtension.cs" />
     <Compile Include="SQLTranslate\Translator\Extensions\MulticlassClassificationExtension.cs" />

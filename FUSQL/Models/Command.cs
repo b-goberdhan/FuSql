@@ -9,6 +9,7 @@ namespace FUSQL.Models
 {
     public class Command
     {
+        public Create.Create Create { get; set; }
         public Find Find { get; set; }
         public Get Get { get; set; } = Get.None;
         public Check Check { get; set; }

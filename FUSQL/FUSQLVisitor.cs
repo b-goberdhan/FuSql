@@ -2,6 +2,7 @@
 using Antlr4.Runtime.Tree;
 using FUSQL.Grammer;
 using FUSQL.Models;
+using FUSQL.Models.Create;
 using FUSQL.Models.Enums;
 using System;
 using System.Collections.Generic;
@@ -24,6 +25,19 @@ namespace FUSQL
         {
             ParsedQuery.Command = new Command();
             return base.VisitCommand(context);
+        }
+        public override Query VisitCreate([NotNull] FUSQLParser.CreateContext context)
+        {
+            ParsedQuery.Command.Create = new Create();
+            return base.VisitCreate(context);
+        }
+        public override Query VisitMapping([NotNull] FUSQLParser.MappingContext context)
+        {
+            var mapping = new Mapping();
+            mapping.Name = context.name().GetText();
+            mapping.GoalColumn = context.goal().GetText();
+            ParsedQuery.Command.Create.Mapping = mapping;
+            return base.VisitMapping(context);
         }
         public override Query VisitFind([NotNull] FUSQLParser.FindContext context)
         {
@@ -56,6 +70,10 @@ namespace FUSQL
             {
                 ParsedQuery.Command.Identify.From = context.name().GetText();
             }
+            else if (ParsedQuery.Command.Create?.Mapping != null)
+            {
+                ParsedQuery.Command.Create.Mapping.From = context.name().GetText();
+            }
             return base.VisitFrom(context);
         }
         public override Query VisitWhere([NotNull] FUSQLParser.WhereContext context)
@@ -84,7 +102,16 @@ namespace FUSQL
         public override Query VisitColumn([NotNull] FUSQLParser.ColumnContext context)
         {
             var command = ParsedQuery.Command;
-            command.Find.Group.Columns.Add(context.GetText());
+            if (command.Find != null)
+            {
+                command.Find.Group.Columns.Add(context.GetText());
+            }
+            else if (command.Create?.Mapping != null)
+            {
+                command.Create.Mapping.InputColumns.Add(context.GetText());
+            }
+            
+           
             return base.VisitColumn(context);
         }
         public override Query VisitString([NotNull] FUSQLParser.StringContext context)
@@ -93,13 +120,6 @@ namespace FUSQL
             {
                 ParsedQuery.Command.Check.Description = context.GetText();
             }
-            //else if (ParsedQuery.Command.Identify != null)
-            //{
-            //    if (ParsedQuery.Command.Identify.SideEffects == null)
-            //    {
-            //        ParsedQuery.Command.Identify.SideEffects = context.GetText();
-            //    }
-            //}
             
             return base.VisitString(context);
         }

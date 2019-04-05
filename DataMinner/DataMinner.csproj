@@ -107,6 +107,7 @@
     <Compile Include="Mining\MulticlassClassification.cs" />
     <Compile Include="Mining\MulticlassClassificationData.cs" />
     <Compile Include="Mining\MulticlassClassificationPrediction.cs" />
+    <Compile Include="Mining\MultiClassification\BuildMultiClassification.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

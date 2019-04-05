@@ -3,12 +3,15 @@ grammar FUSQL;
  * Parser Rules
  */
  query			: command NEWLINE ;
- command		: (find) | (check) | (identify) ;
+ command		: (create) | (find) | (check) | (identify) ;
+ 
  check			: CHECK for using with from ;
  for			: FOR name ;
  using			: USING string ;
  with			: WITH name ;
- find			: FIND groups from ;
+ create			: CREATE (mapping) ;
+ mapping		: MAPPING name USING (column)+ TO goal from;
+ find			: FIND groups from (where)?;
  groups			: number GROUPS name USING (column)+ ; // Groups in this case is analogus to clusters
  from			: FROM name ;
  where			: WHERE (conditions)+ ;
@@ -17,6 +20,7 @@ grammar FUSQL;
 					(name GREATER_THAN value) | (name LESS_THAN value);
  
  column			: WORD ;
+ goal			: WORD ;
  name			: WORD ;
  number			: NUMBER ;
  value			: TEXT | NUMBER ;
@@ -60,6 +64,8 @@ FOR				: F O R ;
 WITH			: W I T H ;
 GROUPS			: G R O U P S ;
 CREATE			: C R E A T E ;
+MAPPING			: M A P P I N G ;
+TO				: T O ;
 CLASS			: C L A S S ;
 FROM			: F R O M ;
 WHERE			: W H E R E ;
