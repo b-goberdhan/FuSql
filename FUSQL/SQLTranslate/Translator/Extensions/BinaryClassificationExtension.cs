@@ -26,7 +26,7 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
             // Build the model so we can begin to use and classify
             binaryClassifier.BuildModel();
 
-            BinaryClassificationData sentiment = new BinaryClassificationData { Description = translation.Operation.Description};
+            BinaryClassificationData sentiment = new BinaryClassificationData { commentsReview = translation.Operation.Description};
             var result = binaryClassifier.Evaluate(sentiment);
             return result;
         }
