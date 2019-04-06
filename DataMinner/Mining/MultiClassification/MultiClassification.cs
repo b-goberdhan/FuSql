@@ -49,9 +49,9 @@ namespace DataMinner.Mining.MultiClassification
             _transformers = trainingPipeline.Fit(splitDataView.TrainSet);
         }
 
-        public MulticlassClassificationPrediction Evaluate(TRowModel data)
+        public MultiClassPrediction Evaluate(TRowModel data)
         {
-            return _transformers.CreatePredictionEngine<TRowModel, MulticlassClassificationPrediction>(_mlContext).Predict(data);
+            return _transformers.CreatePredictionEngine<TRowModel, MultiClassPrediction>(_mlContext).Predict(data);
         }
     }
 }

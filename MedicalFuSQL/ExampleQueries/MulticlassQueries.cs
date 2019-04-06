@@ -8,6 +8,6 @@ namespace MedicalFuSQL.ExampleQueries
 {
     public class MulticlassQueries
     {
-        public const string CREATE_MAPPING = "CREATE MAPPING map USING sideEffectsReview TO sideEffects";
+        public const string CREATE_MAPPING = "CREATE MAPPING map USING sideEffectsReview TO sideEffects FROM drugLibTrain";
     }
 }

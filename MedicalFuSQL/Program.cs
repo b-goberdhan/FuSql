@@ -43,27 +43,10 @@ namespace MedicalFuSQL
                 {
                     string queryString = Console.ReadLine();
                     Query query = fusql.ParseQuery(queryString + "\n");
-                    
                     Translation<DrugTestModel> translation = Translator.TranslateQuery<DrugTestModel>(query);
-                    var result = translation.RunDataMining(_db) as MultiClassification<DrugTestModel>;
-                    while(true)
-                    {
-                        Console.WriteLine("Enter some text as predictions");
-                        var prediction = result.Evaluate(new DrugTestModel() { sideEffectsReview = Console.ReadLine() });
-                        Console.WriteLine(prediction.GoalTable);
-                    }
-                    if (translation.Operation.MiningOp == MiningOp.Clustering)
-                    {
-                        
-                    }
-                    else if (translation.Operation.MiningOp == MiningOp.BinaryClassification)
-                    {
-
-                    }
-                    else if (translation.Operation.MiningOp == MiningOp.MultiClassification)
-                    {
-
-                    }
+                    var result = translation.RunDataMining(_db);
+                    Console.WriteLine(result?.ToString());
+                    Console.WriteLine("done.");
                 }
                 catch(Exception e)
                 {

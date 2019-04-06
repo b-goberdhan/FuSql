@@ -7,30 +7,43 @@ using System.Threading.Tasks;
 
 namespace FUSQL.InternalModels
 {
-    public sealed class FusqlInternal
+    public class FusqlInternal<TRowModel> where TRowModel : class, new()
     {
-        
-
-        private static FusqlInternal instance = null;
+        private Dictionary<string, MultiClassification<TRowModel>> _multiClassifiers;
+        private static FusqlInternal<TRowModel> instance = null;
         private static readonly object padlock = new object();
 
         private FusqlInternal()
         {
-
+            _multiClassifiers = new Dictionary<string, MultiClassification<TRowModel>>();
         }
-        public static FusqlInternal Instance
+        public static FusqlInternal<TRowModel> GetInstance()
         {
-            get
+
+            lock(padlock)
             {
-                lock(padlock)
+                if (instance == null)
                 {
-                    if (instance == null)
-                    {
-                        instance = new FusqlInternal();
-                    }
-                    return instance;
+                    instance = new FusqlInternal<TRowModel>();
                 }
+                return instance;
             }
+            
+        }
+        public void AddMultiClassifier(string classifierName, MultiClassification<TRowModel> classifier)
+        {
+            if (!_multiClassifiers.ContainsKey(classifierName))
+            {
+                _multiClassifiers.Add(classifierName, classifier);
+            }
+        }
+        public MultiClassification<TRowModel> GetMultiClassifer(string classifierName)
+        {
+            if (_multiClassifiers.ContainsKey(classifierName))
+            {
+                return _multiClassifiers[classifierName];
+            }
+            return null;
         }
 
     }

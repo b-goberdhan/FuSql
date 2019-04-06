@@ -34,16 +34,19 @@ namespace FUSQL.SQLTranslate.Translator
                 operation.GoalTable = TryGetBinaryClassificationGoalTable(query);
                 */
             }
-            else if (miningOp == MiningOp.MultiClassification)
+            else if (miningOp == MiningOp.Classify)
             {
-                //operation.Description = TryGetMulticlassClassificationDescription(query);
-                //operation.DescriptionTable = TryGetMulticlassClassificationDescriptionTable(query);
-                //operation.GoalTable = TryGetMulticlassClassificationGoalTable(query);
+                operation = new RunClassificationOperation()
+                {
+                    ClassifierName = query.Command.Classify.ClassifierName,
+                    Terms = query.Command.Classify.Terms
+                };
             }
             else if (miningOp == MiningOp.BuildMultiClassification)
             {
                 operation = new BuildClassificationOperation(sQLCommand)
                 {
+                    Name = query.Command.Create.Mapping.Name,
                     Goal = query.Command.Create.Mapping.GoalColumn,
                     InputColumns = query.Command.Create.Mapping.InputColumns
                 };
@@ -72,6 +75,10 @@ namespace FUSQL.SQLTranslate.Translator
             else if (query.Command.Create?.Mapping != null)
             {
                 return MiningOp.BuildMultiClassification;
+            }
+            else if (query.Command.Classify != null)
+            {
+                return MiningOp.Classify;
             }
             return MiningOp.None;
         }

@@ -39,6 +39,25 @@ namespace FUSQL
             ParsedQuery.Command.Create.Mapping = mapping;
             return base.VisitMapping(context);
         }
+        public override Query VisitClassify([NotNull] FUSQLParser.ClassifyContext context)
+        {
+            ParsedQuery.Command.Classify = new Classify()
+            {
+                Terms = new List<Term>(),
+                ClassifierName = context.name().GetText()
+            };
+            return base.VisitClassify(context);
+        }
+        public override Query VisitTerm([NotNull] FUSQLParser.TermContext context)
+        {
+            ParsedQuery.Command.Classify.Terms.Add(new Term
+            {
+                Value = context.@string().GetText(),
+                Column = context.column().GetText()
+            });
+            return base.VisitTerm(context);
+        }
+
         public override Query VisitFind([NotNull] FUSQLParser.FindContext context)
         {
             ParsedQuery.Command.Find = new Find();
