@@ -3,6 +3,7 @@ using Database.SQLite;
 using DataMinner.Mining.Enums;
 using DataMinner.Mining.MultiClassification;
 using FUSQL;
+using FUSQL.Exceptions;
 using FUSQL.Models;
 using FUSQL.SQLTranslate.Results;
 using FUSQL.SQLTranslate.Translator;
@@ -45,11 +46,23 @@ namespace MedicalFuSQL
                     Query query = fusql.ParseQuery(queryString + "\n");
                     Translation<DrugTestModel> translation = Translator.TranslateQuery<DrugTestModel>(query);
                     var result = translation.RunDataMining(_db);
-                    Console.WriteLine(result?.ToString());
+                    if (result != null)
+                    {
+                        Console.WriteLine("Result: " + result.ToString());
+                    }
                     Console.WriteLine("done.");
                 }
-                catch(Exception e)
+                catch (MultiClassException e)
                 {
+                    Console.WriteLine(e.ErrorMessage);
+                }
+                catch (ParsingException e)
+                {
+                    Console.WriteLine(e.ErrorMessage);
+                    continue;
+                }
+                catch(Exception e)
+                { 
                     break;
                 }
             }

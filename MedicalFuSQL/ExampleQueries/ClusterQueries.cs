@@ -8,6 +8,6 @@ namespace MedicalFuSQL.ExampleQueries
 {
     public class ClusterQueries
     {
-        public const string FIND_2_GROUPS_USING_RATING = "FIND 5 GROUPS clusters USING rating FROM drugLibTest\n";
+        public const string FIND_2_GROUPS_USING_RATING = "FIND 5 GROUPS clusters USING rating FROM drugLibTest";
     }
 }

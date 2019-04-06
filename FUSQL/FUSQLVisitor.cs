@@ -39,6 +39,16 @@ namespace FUSQL
             ParsedQuery.Command.Create.Mapping = mapping;
             return base.VisitMapping(context);
         }
+        public override Query VisitDelete([NotNull] FUSQLParser.DeleteContext context)
+        {
+            ParsedQuery.Command.Delete = new Delete();
+            return base.VisitDelete(context);
+        }
+        public override Query VisitDeletemap([NotNull] FUSQLParser.DeletemapContext context)
+        {
+            ParsedQuery.Command.Delete.DeleteMap = context.name().GetText();
+            return base.VisitDeletemap(context);
+        }
         public override Query VisitClassify([NotNull] FUSQLParser.ClassifyContext context)
         {
             ParsedQuery.Command.Classify = new Classify()

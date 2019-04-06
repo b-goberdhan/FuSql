@@ -14,6 +14,19 @@ namespace FUSQL.SQLTranslate.Results
         {
             Clusters = new Dictionary<int, List<TModel>>();
         }
+        public override string ToString()
+        {
+            string result = "";
+            foreach (int key in Clusters.Keys)
+            {
+                result += "Cluster: " + key + "\n";
+                foreach (TModel model in Clusters[key])
+                {
+                    result += model.ToString() + "\n";
+                }
+            }
+            return result;
+        }
 
     }
 }

@@ -3,7 +3,7 @@ grammar FUSQL;
  * Parser Rules
  */
  query			: command NEWLINE ;
- command		: (create) | (classify) | (find) | (check) | (identify) ;
+ command		: (create) | (delete) | (classify) | (find) | (check) | (identify) ;
  
  check			: CHECK for using with from ;
  for			: FOR name ;
@@ -11,6 +11,8 @@ grammar FUSQL;
  with			: WITH name ;
  create			: CREATE (mapping) ;
  mapping		: MAPPING name USING (column)+ TO goal from;
+ delete			: DELETE (deletemap);
+ deletemap		: MAPPING name ;
  classify		: CLASSIFY (term)+ USING name ;
  term			: string IN column ;
  find			: FIND groups from (where)?;
@@ -68,6 +70,7 @@ WITH			: W I T H ;
 IN				: I N ;
 GROUPS			: G R O U P S ;
 CREATE			: C R E A T E ;
+DELETE			: D E L E T E ;
 MAPPING			: M A P P I N G ;
 TO				: T O ;
 CLASS			: C L A S S ;

@@ -1,6 +1,8 @@
 ﻿using Database.BaseDb;
 using DataMinner.Mining.MultiClassification;
+using FUSQL.Exceptions;
 using FUSQL.InternalModels;
+using FUSQL.SQLTranslate.Results;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -13,13 +15,17 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
 {
     public static class MultiClassificationExtension
     {
-        public static MultiClassification<TRowModel> BuildMulticlassClassification<TRowModel>(this Translation<TRowModel> translation, IDb db) where TRowModel : class, new()
+        public static BuildClassifierResultView BuildMulticlassClassification<TRowModel>(this Translation<TRowModel> translation, IDb db) where TRowModel : class, new()
         {
-            if (translation.Operation.MiningOp != DataMinner.Mining.Enums.MiningOp.BuildMultiClassification)
-            {
-                throw new Exception("Cannot run multiclass classification on translation not meant for multiclass classification.");
-            }
             var operation = translation.Operation as BuildClassificationOperation;
+            if (FusqlInternal<TRowModel>.GetInstance().GetMultiClassifer(operation.Name) != null)
+            {
+                throw new MultiClassException()
+                {
+                    ErrorMessage = "A classifier with the name: '" + operation.Name + "' is already defined"
+                };
+            }
+            
             // Gather initial data from the DB. We need this to train our binary classification operation
             var sqlResults = new List<TRowModel>();
             translation.RunSQL(db, (model) =>
@@ -34,10 +40,13 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
 
             // MulticlassClassificationData problem = new MulticlassClassificationData {
             //    Description = translation.Operation.Description };
-           
-            return multiclassClassifier;
+            FusqlInternal<TRowModel>.GetInstance().AddMultiClassifier(operation.Name, multiclassClassifier);
+            return new BuildClassifierResultView()
+            {
+                Name = operation.Name
+            };
         }
-        public static string RunClassifier<TRowModel>(this Translation<TRowModel> translation) where TRowModel : class, new()
+        public static ResultView RunClassifier<TRowModel>(this Translation<TRowModel> translation) where TRowModel : class, new()
         {
             var operation = translation.Operation as RunClassificationOperation;
             var classifier = FusqlInternal<TRowModel>.GetInstance().GetMultiClassifer(operation.ClassifierName);
@@ -49,7 +58,10 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
                 info.SetValue(data, term.Value);
             }
             string result = classifier.Evaluate(data).GoalTable;
-            return result;
+            return new RunClassifierResultView()
+            {
+                Prediction = result
+            };
         }
 
 

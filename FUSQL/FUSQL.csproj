@@ -47,6 +47,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Exceptions\MultiClassException.cs" />
+    <Compile Include="Exceptions\ParsingException.cs" />
     <Compile Include="FUSQLHandler.cs" />
     <Compile Include="FUSQLVisitor.cs" />
     <Compile Include="Grammer\FUSQL.g4.lexer.cs">
@@ -62,6 +64,7 @@
     <Compile Include="Models\Condition.cs" />
     <Compile Include="Models\Create\Create.cs" />
     <Compile Include="Models\Create\Mapping.cs" />
+    <Compile Include="Models\Delete.cs" />
     <Compile Include="Models\Enums\Operation.cs" />
     <Compile Include="Models\Find.cs" />
     <Compile Include="Models\Enums\Get.cs" />
@@ -74,8 +77,11 @@
     <Compile Include="SQLTranslate\BuildClassificationOperation.cs" />
     <Compile Include="SQLTranslate\ClusterOperation.cs" />
     <Compile Include="SQLTranslate\Operations.cs" />
+    <Compile Include="SQLTranslate\Results\BuildClassifierResultView.cs" />
     <Compile Include="SQLTranslate\Results\ClusterResultView.cs" />
+    <Compile Include="SQLTranslate\Results\IResultView.cs" />
     <Compile Include="SQLTranslate\Results\ResultView.cs" />
+    <Compile Include="SQLTranslate\Results\RunClassifierResultView.cs" />
     <Compile Include="SQLTranslate\RunClassificationOperation.cs" />
     <Compile Include="SQLTranslate\Translator\Extensions\BinaryClassificationExtension.cs" />
     <Compile Include="SQLTranslate\Translator\Extensions\MultiClassificationExtension.cs" />

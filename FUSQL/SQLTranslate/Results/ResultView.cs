@@ -7,14 +7,24 @@ using System.Threading.Tasks;
 
 namespace FUSQL.SQLTranslate.Results
 {
-    public class ResultView<TResultType> where TResultType : class, new() 
+    public abstract class ResultView<TResultType> : IResultView where TResultType : class, new() 
     {
         public MiningOp MiningOp { get; private set; }
         public ResultView(MiningOp miningOp)
         {
             MiningOp = miningOp;
         }
+        public abstract override string ToString();
          
 
+    }
+    public abstract class ResultView : IResultView
+    {
+        public MiningOp MiningOp { get; private set; }
+        public ResultView(MiningOp miningOp)
+        {
+            MiningOp = miningOp;
+        }
+        public abstract override string ToString();
     }
 }

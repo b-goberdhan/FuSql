@@ -42,6 +42,10 @@ namespace FUSQL.SQLTranslate.Translator
                     Terms = query.Command.Classify.Terms
                 };
             }
+            else if (miningOp == MiningOp.DeleteMultiClassification)
+            {
+                //YOU ENDED OFF HERE DUDE!
+            }
             else if (miningOp == MiningOp.BuildMultiClassification)
             {
                 operation = new BuildClassificationOperation(sQLCommand)
@@ -72,6 +76,10 @@ namespace FUSQL.SQLTranslate.Translator
             {
                 return MiningOp.MultiClassification;
             }
+            else if (query.Command.Delete != null)
+            {
+                return MiningOp.DeleteMultiClassification;
+            }
             else if (query.Command.Create?.Mapping != null)
             {
                 return MiningOp.BuildMultiClassification;
@@ -80,6 +88,7 @@ namespace FUSQL.SQLTranslate.Translator
             {
                 return MiningOp.Classify;
             }
+
             return MiningOp.None;
         }
 
