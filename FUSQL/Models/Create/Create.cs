@@ -8,7 +8,7 @@ namespace FUSQL.Models.Create
 {
     public class Create
     {
-        public Mapping Mapping { get; set; }
-
+        public MultiClassification MultiClassification { get; set; }
+        public BinaryClassification BinaryClassification { get; set; }
     }
 }

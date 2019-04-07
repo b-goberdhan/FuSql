@@ -24,15 +24,14 @@ namespace FUSQL.SQLTranslate.Translator
                     ClusterColumns = TryGetClusterColumns(query)
                 };
             }
-            else if (miningOp == MiningOp.BinaryClassification)
+            else if (miningOp == MiningOp.BuildBinaryClassification)
             {
-                
-                /*
-                operation = new 
-                operation.Description = TryGetBinaryClassificationDescription(query);
-                operation.DescriptionTable = TryGetBinaryClassificationDescriptionTable(query);
-                operation.GoalTable = TryGetBinaryClassificationGoalTable(query);
-                */
+                operation = new BuildBinaryClassificationOperation(sQLCommand)
+                {
+                    Name = query.Command.Create.BinaryClassification.Name,
+                    Goal = query.Command.Create.BinaryClassification.GoalColumn,
+                    InputColumns = query.Command.Create.BinaryClassification.InputColumns
+                };
             }
             else if (miningOp == MiningOp.Classify)
             {
@@ -44,15 +43,18 @@ namespace FUSQL.SQLTranslate.Translator
             }
             else if (miningOp == MiningOp.DeleteMultiClassification)
             {
-                //YOU ENDED OFF HERE DUDE!
+                operation = new DeleteMultiClassificationOperation()
+                {
+                    Name = query.Command.Delete.DeleteClassifactionName
+                };
             }
             else if (miningOp == MiningOp.BuildMultiClassification)
             {
-                operation = new BuildClassificationOperation(sQLCommand)
+                operation = new BuildMultiClassificationOperation(sQLCommand)
                 {
-                    Name = query.Command.Create.Mapping.Name,
-                    Goal = query.Command.Create.Mapping.GoalColumn,
-                    InputColumns = query.Command.Create.Mapping.InputColumns
+                    Name = query.Command.Create.MultiClassification.Name,
+                    Goal = query.Command.Create.MultiClassification.GoalColumn,
+                    InputColumns = query.Command.Create.MultiClassification.InputColumns
                 };
 
             }
@@ -70,7 +72,7 @@ namespace FUSQL.SQLTranslate.Translator
             }
             else if (query.Command.Check != null)
             {
-                return MiningOp.BinaryClassification;
+                return MiningOp.BuildBinaryClassification;
             }
             else if (query.Command.Identify != null)
             {
@@ -80,13 +82,17 @@ namespace FUSQL.SQLTranslate.Translator
             {
                 return MiningOp.DeleteMultiClassification;
             }
-            else if (query.Command.Create?.Mapping != null)
+            else if (query.Command.Create?.MultiClassification != null)
             {
                 return MiningOp.BuildMultiClassification;
             }
             else if (query.Command.Classify != null)
             {
                 return MiningOp.Classify;
+            }
+            else if (query.Command.Create?.BinaryClassification != null)
+            {
+                return MiningOp.BuildBinaryClassification;
             }
 
             return MiningOp.None;
@@ -112,14 +118,23 @@ namespace FUSQL.SQLTranslate.Translator
             {
                 command = "SELECT * FROM " + query.Command.Identify.From;
             }
-            else if(query.Command.Create?.Mapping != null)
+            else if(query.Command.Create?.MultiClassification != null)
             {
-                var columns = query.Command.Create.Mapping.GoalColumn;
-                foreach (var col in query.Command.Create.Mapping.InputColumns)
+                var columns = query.Command.Create.MultiClassification.GoalColumn;
+                foreach (var col in query.Command.Create.MultiClassification.InputColumns)
                 {
                     columns += ", " + col;
                 }
-                command = "SELECT " + columns + " FROM " + query.Command.Create.Mapping.From;
+                command = "SELECT " + columns + " FROM " + query.Command.Create.MultiClassification.From;
+            }
+            else if(query.Command.Create?.BinaryClassification != null)
+            {
+                var columns = query.Command.Create.BinaryClassification.GoalColumn;
+                foreach (var col in query.Command.Create.BinaryClassification.InputColumns)
+                {
+                    columns += ", " + col;
+                }
+                command = "SELECT " + columns + " FROM " + query.Command.Create.BinaryClassification.From;
             }
             return command;
         }

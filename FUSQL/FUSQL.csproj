@@ -59,11 +59,12 @@
     </Compile>
     <Compile Include="InternalModels\FusqlInternal.cs" />
     <Compile Include="Models\Check.cs" />
+    <Compile Include="Models\Create\BinaryClassification.cs" />
     <Compile Include="Models\Classify.cs" />
     <Compile Include="Models\Command.cs" />
     <Compile Include="Models\Condition.cs" />
     <Compile Include="Models\Create\Create.cs" />
-    <Compile Include="Models\Create\Mapping.cs" />
+    <Compile Include="Models\Create\MultiClassification.cs" />
     <Compile Include="Models\Delete.cs" />
     <Compile Include="Models\Enums\Operation.cs" />
     <Compile Include="Models\Find.cs" />
@@ -74,11 +75,14 @@
     <Compile Include="Models\Term.cs" />
     <Compile Include="Models\Where.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SQLTranslate\BuildClassificationOperation.cs" />
+    <Compile Include="SQLTranslate\BuildBinaryClassificationOperation.cs" />
+    <Compile Include="SQLTranslate\BuildMultiClassificationOperation.cs" />
     <Compile Include="SQLTranslate\ClusterOperation.cs" />
+    <Compile Include="SQLTranslate\DeleteMultiClassificationOperation.cs" />
     <Compile Include="SQLTranslate\Operations.cs" />
     <Compile Include="SQLTranslate\Results\BuildClassifierResultView.cs" />
     <Compile Include="SQLTranslate\Results\ClusterResultView.cs" />
+    <Compile Include="SQLTranslate\Results\DeleteClassifierResultView.cs" />
     <Compile Include="SQLTranslate\Results\IResultView.cs" />
     <Compile Include="SQLTranslate\Results\ResultView.cs" />
     <Compile Include="SQLTranslate\Results\RunClassifierResultView.cs" />

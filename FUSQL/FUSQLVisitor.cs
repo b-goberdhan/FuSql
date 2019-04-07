@@ -29,25 +29,35 @@ namespace FUSQL
         public override Query VisitCreate([NotNull] FUSQLParser.CreateContext context)
         {
             ParsedQuery.Command.Create = new Create();
+      
             return base.VisitCreate(context);
         }
-        public override Query VisitMapping([NotNull] FUSQLParser.MappingContext context)
+        public override Query VisitClassification([NotNull] FUSQLParser.ClassificationContext context)
         {
-            var mapping = new Mapping();
-            mapping.Name = context.name().GetText();
-            mapping.GoalColumn = context.goal().GetText();
-            ParsedQuery.Command.Create.Mapping = mapping;
-            return base.VisitMapping(context);
+            var multiclassification = new MultiClassification();
+            multiclassification.Name = context.name().GetText();
+            multiclassification.GoalColumn = context.goal().GetText();
+            ParsedQuery.Command.Create.MultiClassification = multiclassification;;
+            return base.VisitClassification(context);
+        }
+        public override Query VisitChecker([NotNull] FUSQLParser.CheckerContext context)
+        {
+            var binaryclassification = new BinaryClassification();
+            binaryclassification.Name = context.name().GetText();
+            binaryclassification.GoalColumn = context.goal().GetText();
+            ParsedQuery.Command.Create.BinaryClassification = binaryclassification;
+            return base.VisitChecker(context);
         }
         public override Query VisitDelete([NotNull] FUSQLParser.DeleteContext context)
         {
             ParsedQuery.Command.Delete = new Delete();
             return base.VisitDelete(context);
         }
-        public override Query VisitDeletemap([NotNull] FUSQLParser.DeletemapContext context)
+        public override Query VisitDeleteclassification([NotNull] FUSQLParser.DeleteclassificationContext context)
         {
-            ParsedQuery.Command.Delete.DeleteMap = context.name().GetText();
-            return base.VisitDeletemap(context);
+            
+            ParsedQuery.Command.Delete.DeleteClassifactionName = context.name().GetText();
+            return base.VisitDeleteclassification(context);
         }
         public override Query VisitClassify([NotNull] FUSQLParser.ClassifyContext context)
         {
@@ -99,9 +109,13 @@ namespace FUSQL
             {
                 ParsedQuery.Command.Identify.From = context.name().GetText();
             }
-            else if (ParsedQuery.Command.Create?.Mapping != null)
+            else if (ParsedQuery.Command.Create?.MultiClassification != null)
             {
-                ParsedQuery.Command.Create.Mapping.From = context.name().GetText();
+                ParsedQuery.Command.Create.MultiClassification.From = context.name().GetText();
+            }
+            else if (ParsedQuery.Command.Create?.BinaryClassification != null)
+            {
+                ParsedQuery.Command.Create.BinaryClassification.From = context.name().GetText();
             }
             return base.VisitFrom(context);
         }
@@ -135,11 +149,14 @@ namespace FUSQL
             {
                 command.Find.Group.Columns.Add(context.GetText());
             }
-            else if (command.Create?.Mapping != null)
+            else if (command.Create?.MultiClassification != null)
             {
-                command.Create.Mapping.InputColumns.Add(context.GetText());
+                command.Create.MultiClassification.InputColumns.Add(context.GetText());
             }
-            
+            else if (command.Create?.BinaryClassification != null)
+            {
+                command.Create.BinaryClassification.InputColumns.Add(context.GetText());
+            }
            
             return base.VisitColumn(context);
         }

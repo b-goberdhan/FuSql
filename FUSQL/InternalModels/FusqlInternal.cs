@@ -45,6 +45,10 @@ namespace FUSQL.InternalModels
             }
             return null;
         }
+        public void DeleteClassifier(string name)
+        {
+            _multiClassifiers.Remove(name);
+        }
 
     }
 }

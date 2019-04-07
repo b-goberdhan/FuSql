@@ -17,7 +17,7 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
     {
         public static BuildClassifierResultView BuildMulticlassClassification<TRowModel>(this Translation<TRowModel> translation, IDb db) where TRowModel : class, new()
         {
-            var operation = translation.Operation as BuildClassificationOperation;
+            var operation = translation.Operation as BuildMultiClassificationOperation;
             if (FusqlInternal<TRowModel>.GetInstance().GetMultiClassifer(operation.Name) != null)
             {
                 throw new MultiClassException()
@@ -64,6 +64,14 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
             };
         }
 
-
+        public static ResultView DeleteClassifier<TRowModel>(this Translation<TRowModel> translation) where TRowModel : class, new()
+        {
+            var operation = translation.Operation as DeleteMultiClassificationOperation;
+            FusqlInternal<TRowModel>.GetInstance().DeleteClassifier(operation.Name);
+            return new DeleteMultiClassifierResultView()
+            {
+                ClassifierName = operation.Name
+            };
+        }
     }
 }

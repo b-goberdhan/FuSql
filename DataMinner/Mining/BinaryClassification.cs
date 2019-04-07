@@ -6,6 +6,7 @@ using System.Collections.Generic;
 
 namespace DataMinner.Mining
 {
+    /*
     public class BinaryClassification<TRowModel> where TRowModel : class
     {
         private readonly MLContext _mlContext;
@@ -36,4 +37,5 @@ namespace DataMinner.Mining
             return _predEngine.Predict(data);
         }
     }
+    */
 }

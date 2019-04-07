@@ -7,7 +7,7 @@ namespace DataMinner.Mining
         [ColumnName("PredictedLabel")]
         public bool Prediction { get; set; }
 
-        public float Probability { get; set; }
+        public float Probability { get; set; } = -1;
 
         public float Score { get; set; }
     }

@@ -2,26 +2,26 @@ grammar FUSQL;
 /*
  * Parser Rules
  */
- query			: command NEWLINE ;
- command		: (create) | (delete) | (classify) | (find) | (check) | (identify) ;
- 
- check			: CHECK for using with from ;
- for			: FOR name ;
- using			: USING string ;
- with			: WITH name ;
- create			: CREATE (mapping) ;
- mapping		: MAPPING name USING (column)+ TO goal from;
- delete			: DELETE (deletemap);
- deletemap		: MAPPING name ;
- classify		: CLASSIFY (term)+ USING name ;
- term			: string IN column ;
- find			: FIND groups from (where)?;
- groups			: number GROUPS name USING (column)+ ; // Groups in this case is analogus to clusters
- from			: FROM name ;
- where			: WHERE (conditions)+ ;
- dataset_info	: INFO ;
- conditions		: (name EQUAL value) | (name NOT_EQUAL value) | 
-					(name GREATER_THAN value) | (name LESS_THAN value);
+ query					: command NEWLINE ;
+ command				: (create) | (delete) | (classify) | (find) | (check) | (identify) ;
+ check					: CHECK for using with from ;
+ for					: FOR name ;
+ using					: USING string ;
+ with					: WITH name ;
+ create					: CREATE ((classification) | (checker)) ;
+ classification			: CLASSIFICATION name USING (column)+ TO goal from;
+ checker				: CHECKER name USING (column)+ TO goal from;
+ delete					: DELETE (deleteclassification);
+ deleteclassification	: CLASSIFICATION name ;
+ classify				: CLASSIFY (term)+ USING name ;
+ term					: string IN column ;
+ find					: FIND groups from (where)?;
+ groups					: number GROUPS name USING (column)+ ; // Groups in this case is analogus to clusters
+ from					: FROM name ;
+ where					: WHERE (conditions)+ ;
+ dataset_info			: INFO ;
+ conditions				: (name EQUAL value) | (name NOT_EQUAL value) | 
+							(name GREATER_THAN value) | (name LESS_THAN value);
  
  column			: WORD ;
  goal			: WORD ;
@@ -71,7 +71,8 @@ IN				: I N ;
 GROUPS			: G R O U P S ;
 CREATE			: C R E A T E ;
 DELETE			: D E L E T E ;
-MAPPING			: M A P P I N G ;
+CHECKER			: C H E C K E R ;
+CLASSIFICATION	: C L A S S I F I C A T I O N ;
 TO				: T O ;
 CLASS			: C L A S S ;
 FROM			: F R O M ;

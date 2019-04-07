@@ -24,7 +24,6 @@ namespace DataMinner.Mining.MultiClassification
         public void CreateBuild(string goalColumn, params string[] inputColumns)
         {
             var splitDataView = _mlContext.MulticlassClassification.TrainTestSplit(_dataView, testFraction: 0.2);
-
             var pipeline = _mlContext.Transforms.Conversion.MapValueToKey(inputColumnName: goalColumn, outputColumnName: "Label");
             List<string> features = new List<string>();
             EstimatorChain<ITransformer> inputColumnEstimatorChain = null;

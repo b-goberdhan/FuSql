@@ -1,5 +1,6 @@
 ﻿using Database.BaseDb;
 using Database.SQLite;
+using DataMinner.Mining.BinaryClassification;
 using DataMinner.Mining.Enums;
 using DataMinner.Mining.MultiClassification;
 using FUSQL;
@@ -45,7 +46,17 @@ namespace MedicalFuSQL
                     string queryString = Console.ReadLine();
                     Query query = fusql.ParseQuery(queryString + "\n");
                     Translation<DrugTestModel> translation = Translator.TranslateQuery<DrugTestModel>(query);
-                    var result = translation.RunDataMining(_db);
+                    var result = translation.RunDataMining(_db) as BinaryClassification<DrugTestModel>;
+                    /*while (true)
+                    {
+                        Console.WriteLine("Enter text to binary classify!");
+                        var pred = result.Evaluate(new DrugTestModel()
+                        {
+                            commentsReview = Console.ReadLine()
+                        });
+                        Console.WriteLine(pred.Prediction + "  probability: " + pred.Probability);
+                    }
+                    */
                     if (result != null)
                     {
                         Console.WriteLine("Result: " + result.ToString());

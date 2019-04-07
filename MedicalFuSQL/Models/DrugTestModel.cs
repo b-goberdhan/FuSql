@@ -16,5 +16,6 @@ namespace MedicalFuSQL.Models
         public string sideEffectsReview { get; set; }
         public string sideEffects { get; set; }
         public string commentsReview { get; set; }
+        public bool ratingEnum { get; set; }
     }
 }
