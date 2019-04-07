@@ -9,7 +9,7 @@ grammar FUSQL;
  using					: USING string ;
 
  with					: WITH name ;
- create					: CREATE ((classification) | (checker)) ;
+ create					: CREATE ((classification) | (checker)) (where)? ;
  classification			: CLASSIFICATION name USING (column)+ TO goal from;
  checker				: CHECKER name USING (column)+ TO goal from;
  check					: CHECK (term)+ USING name;

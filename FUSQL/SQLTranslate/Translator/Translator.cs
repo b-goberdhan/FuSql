@@ -16,7 +16,7 @@ namespace FUSQL.SQLTranslate.Translator
             var miningOp = GetMiningOp(query);
             var sQLCommand = GetSqlString(query);
             
-             if (miningOp == MiningOp.Clustering)
+            if (miningOp == MiningOp.Clustering)
             {
                 operation = new ClusterOperation(sQLCommand)
                 {
@@ -113,10 +113,6 @@ namespace FUSQL.SQLTranslate.Translator
             if(query.Command.Find != null)
             {
                 command = "SELECT * FROM " + query.Command.Find.From + " ";
-                if (query.Command.Find.Where != null && query.Command.Find.Where.Conditions.Count > 0)
-                {
-                    command += GetWhereCondition(query.Command.Find.Where);
-                }
             }
             else if(query.Command.Identify != null)
             {
@@ -139,6 +135,10 @@ namespace FUSQL.SQLTranslate.Translator
                     columns += ", " + col;
                 }
                 command = "SELECT " + columns + " FROM " + query.Command.Create.BinaryClassification.From;
+            }
+            if (query.Command.Where != null && query.Command.Where.Conditions.Count > 0)
+            {
+                command += " " + GetWhereCondition(query.Command.Where);
             }
             return command;
         }

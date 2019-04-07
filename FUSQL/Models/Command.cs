@@ -14,6 +14,7 @@ namespace FUSQL.Models
         public Classify Classify { get; set; }
         public Check Check { get; set; }
         public Find Find { get; set; }
+        public Where Where { get; set; }
         public Get Get { get; set; } = Get.None;
 
         public Identify Identify { get; set; }

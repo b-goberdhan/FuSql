@@ -17,5 +17,10 @@ namespace MedicalFuSQL.Models
         public string sideEffects { get; set; }
         public string commentsReview { get; set; }
         public bool ratingEnum { get; set; }
+
+        public override string ToString()
+        {
+            return "Rating: " + rating;
+        }
     }
 }

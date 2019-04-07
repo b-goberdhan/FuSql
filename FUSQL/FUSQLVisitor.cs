@@ -126,8 +126,8 @@ namespace FUSQL
         }
         public override Query VisitWhere([NotNull] FUSQLParser.WhereContext context)
         {
-            ParsedQuery.Command.Find.Where = new Where();
-            ParsedQuery.Command.Find.Where.Conditions = new List<Condition>();
+            ParsedQuery.Command.Where = new Where();
+            ParsedQuery.Command.Where.Conditions = new List<Condition>();
             return base.VisitWhere(context);
         }
         public override Query VisitConditions([NotNull] FUSQLParser.ConditionsContext context)
@@ -136,7 +136,7 @@ namespace FUSQL
             condition.ColumnName = context.name().GetText();
             condition.Value = context.value().GetText();
             condition.Operation = ParseOperation(context);
-            ParsedQuery.Command.Find.Where.Conditions.Add(condition);
+            ParsedQuery.Command.Where.Conditions.Add(condition);
             return base.VisitConditions(context);
         }
         private Operation ParseOperation(FUSQLParser.ConditionsContext context)
