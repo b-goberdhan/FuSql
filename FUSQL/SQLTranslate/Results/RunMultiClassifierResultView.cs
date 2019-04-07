@@ -6,10 +6,10 @@ using System.Threading.Tasks;
 
 namespace FUSQL.SQLTranslate.Results
 {
-    public class RunClassifierResultView : ResultView
+    public class RunMultiClassifierResultView : ResultView
     {
         public string Prediction { get; set; }
-        public RunClassifierResultView() : base(DataMinner.Mining.Enums.MiningOp.Classify) { }
+        public RunMultiClassifierResultView() : base(DataMinner.Mining.Enums.MiningOp.Classify) { }
         public override string ToString()
         {
             return Prediction;

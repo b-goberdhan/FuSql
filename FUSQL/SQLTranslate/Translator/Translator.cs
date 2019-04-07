@@ -41,6 +41,14 @@ namespace FUSQL.SQLTranslate.Translator
                     Terms = query.Command.Classify.Terms
                 };
             }
+            else if (miningOp == MiningOp.Check)
+            {
+                operation = new RunBinaryClassificationOperation()
+                {
+                    BinaryClassifierName = query.Command.Check.BinaryClassifierName,
+                    Terms = query.Command.Check.Terms
+                };
+            }
             else if (miningOp == MiningOp.DeleteMultiClassification)
             {
                 operation = new DeleteMultiClassificationOperation()
@@ -70,10 +78,6 @@ namespace FUSQL.SQLTranslate.Translator
             {
                 return MiningOp.Clustering;
             }
-            else if (query.Command.Check != null)
-            {
-                return MiningOp.BuildBinaryClassification;
-            }
             else if (query.Command.Identify != null)
             {
                 return MiningOp.MultiClassification;
@@ -89,6 +93,10 @@ namespace FUSQL.SQLTranslate.Translator
             else if (query.Command.Classify != null)
             {
                 return MiningOp.Classify;
+            }
+            else if (query.Command.Check != null)
+            {
+                return MiningOp.Check;
             }
             else if (query.Command.Create?.BinaryClassification != null)
             {
@@ -109,10 +117,6 @@ namespace FUSQL.SQLTranslate.Translator
                 {
                     command += GetWhereCondition(query.Command.Find.Where);
                 }
-            }
-            else if(query.Command.Check != null)
-            {
-                command = "SELECT * FROM " + query.Command.Check.From;
             }
             else if(query.Command.Identify != null)
             {
@@ -195,26 +199,7 @@ namespace FUSQL.SQLTranslate.Translator
             return result;
         }
 
-        // Get the text
-        private static string TryGetBinaryClassificationDescription(Query query)
-        {
-            var result = query.Command?.Check?.Description;
-            return result;
-        }
-
-        // Get the text
-        private static string TryGetBinaryClassificationDescriptionTable(Query query)
-        {
-            var result = query.Command?.Check?.DescriptionTable;
-            return result;
-        }
-
-        // Get the text
-        private static string TryGetBinaryClassificationGoalTable(Query query)
-        {
-            var result = query.Command?.Check?.GoalTable;
-            return result;
-        }
+       
 
         // Get the issue text
         private static string TryGetMulticlassClassificationDescription(Query query)

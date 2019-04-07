@@ -80,12 +80,14 @@
     <Compile Include="SQLTranslate\ClusterOperation.cs" />
     <Compile Include="SQLTranslate\DeleteMultiClassificationOperation.cs" />
     <Compile Include="SQLTranslate\Operations.cs" />
-    <Compile Include="SQLTranslate\Results\BuildClassifierResultView.cs" />
+    <Compile Include="SQLTranslate\Results\BuildMultiClassifierResultView.cs" />
     <Compile Include="SQLTranslate\Results\ClusterResultView.cs" />
     <Compile Include="SQLTranslate\Results\DeleteClassifierResultView.cs" />
     <Compile Include="SQLTranslate\Results\IResultView.cs" />
     <Compile Include="SQLTranslate\Results\ResultView.cs" />
-    <Compile Include="SQLTranslate\Results\RunClassifierResultView.cs" />
+    <Compile Include="SQLTranslate\Results\RunBinaryClassifierResultView.cs" />
+    <Compile Include="SQLTranslate\Results\RunMultiClassifierResultView.cs" />
+    <Compile Include="SQLTranslate\RunBinaryClassificationOperation.cs" />
     <Compile Include="SQLTranslate\RunClassificationOperation.cs" />
     <Compile Include="SQLTranslate\Translator\Extensions\BinaryClassificationExtension.cs" />
     <Compile Include="SQLTranslate\Translator\Extensions\MultiClassificationExtension.cs" />

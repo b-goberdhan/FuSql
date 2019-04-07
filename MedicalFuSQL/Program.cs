@@ -46,7 +46,7 @@ namespace MedicalFuSQL
                     string queryString = Console.ReadLine();
                     Query query = fusql.ParseQuery(queryString + "\n");
                     Translation<DrugTestModel> translation = Translator.TranslateQuery<DrugTestModel>(query);
-                    var result = translation.RunDataMining(_db) as BinaryClassification<DrugTestModel>;
+                    var result = translation.RunDataMining(_db) as IResultView;
                     /*while (true)
                     {
                         Console.WriteLine("Enter text to binary classify!");

@@ -8,9 +8,7 @@ namespace FUSQL.Models
 {
     public class Check
     {
-        public string From { get; set; }
-        public string Description { get; set; }
-        public string DescriptionTable { get; set; }
-        public string GoalTable { get; set; }
+        public List<Term> Terms { get; set; }
+        public string BinaryClassifierName { get; set; }
     }
 }

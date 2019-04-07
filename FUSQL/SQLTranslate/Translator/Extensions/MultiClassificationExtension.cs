@@ -15,7 +15,7 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
 {
     public static class MultiClassificationExtension
     {
-        public static BuildClassifierResultView BuildMulticlassClassification<TRowModel>(this Translation<TRowModel> translation, IDb db) where TRowModel : class, new()
+        public static BuildMultiClassifierResultView BuildMultiClassification<TRowModel>(this Translation<TRowModel> translation, IDb db) where TRowModel : class, new()
         {
             var operation = translation.Operation as BuildMultiClassificationOperation;
             if (FusqlInternal<TRowModel>.GetInstance().GetMultiClassifer(operation.Name) != null)
@@ -41,12 +41,12 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
             // MulticlassClassificationData problem = new MulticlassClassificationData {
             //    Description = translation.Operation.Description };
             FusqlInternal<TRowModel>.GetInstance().AddMultiClassifier(operation.Name, multiclassClassifier);
-            return new BuildClassifierResultView()
+            return new BuildMultiClassifierResultView()
             {
                 Name = operation.Name
             };
         }
-        public static ResultView RunClassifier<TRowModel>(this Translation<TRowModel> translation) where TRowModel : class, new()
+        public static ResultView RunMultiClassifier<TRowModel>(this Translation<TRowModel> translation) where TRowModel : class, new()
         {
             var operation = translation.Operation as RunClassificationOperation;
             var classifier = FusqlInternal<TRowModel>.GetInstance().GetMultiClassifer(operation.ClassifierName);
@@ -58,16 +58,16 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
                 info.SetValue(data, term.Value);
             }
             string result = classifier.Evaluate(data).GoalTable;
-            return new RunClassifierResultView()
+            return new RunMultiClassifierResultView()
             {
                 Prediction = result
             };
         }
 
-        public static ResultView DeleteClassifier<TRowModel>(this Translation<TRowModel> translation) where TRowModel : class, new()
+        public static ResultView DeleteMultiClassifier<TRowModel>(this Translation<TRowModel> translation) where TRowModel : class, new()
         {
             var operation = translation.Operation as DeleteMultiClassificationOperation;
-            FusqlInternal<TRowModel>.GetInstance().DeleteClassifier(operation.Name);
+            FusqlInternal<TRowModel>.GetInstance().DeleteMultiClassifier(operation.Name);
             return new DeleteMultiClassifierResultView()
             {
                 ClassifierName = operation.Name

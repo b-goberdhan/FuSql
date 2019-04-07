@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace FUSQL.SQLTranslate.Results
 {
-    public class BuildClassifierResultView : ResultView
+    public class BuildMultiClassifierResultView : ResultView
     {
         public string Name { get; set; }
-        public BuildClassifierResultView() : base(MiningOp.BuildMultiClassification)
+        public BuildMultiClassifierResultView() : base(MiningOp.BuildMultiClassification)
         {
 
         }

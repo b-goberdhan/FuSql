@@ -68,13 +68,22 @@ namespace FUSQL
             };
             return base.VisitClassify(context);
         }
+        
         public override Query VisitTerm([NotNull] FUSQLParser.TermContext context)
         {
-            ParsedQuery.Command.Classify.Terms.Add(new Term
-            {
+            var term = new Term() {
                 Value = context.@string().GetText(),
                 Column = context.column().GetText()
-            });
+            };
+            if (ParsedQuery.Command.Classify != null)
+            {
+                ParsedQuery.Command.Classify.Terms.Add(term);
+            }
+            else if (ParsedQuery.Command.Check != null)
+            {
+                ParsedQuery.Command.Check.Terms.Add(term);
+            }
+            
             return base.VisitTerm(context);
         }
 
@@ -100,10 +109,6 @@ namespace FUSQL
             if (ParsedQuery.Command.Find != null)
             {
                 ParsedQuery.Command.Find.From = context.name().GetText();
-            }
-            else if (ParsedQuery.Command.Check != null)
-            {
-                ParsedQuery.Command.Check.From = context.name().GetText();
             }
             else if (ParsedQuery.Command.Identify != null)
             {
@@ -162,16 +167,15 @@ namespace FUSQL
         }
         public override Query VisitString([NotNull] FUSQLParser.StringContext context)
         {
-            if(ParsedQuery.Command.Check != null)
-            {
-                ParsedQuery.Command.Check.Description = context.GetText();
-            }
-            
             return base.VisitString(context);
         }
         public override Query VisitCheck([NotNull] FUSQLParser.CheckContext context)
         {
-            ParsedQuery.Command.Check = new Check();
+            ParsedQuery.Command.Check = new Check()
+            {
+                BinaryClassifierName = context.name().GetText(),
+                Terms = new List<Term>()
+            };
             return base.VisitCheck(context);
         }
         public override Query VisitIdentify([NotNull] FUSQLParser.IdentifyContext context)
@@ -180,19 +184,10 @@ namespace FUSQL
             return base.VisitIdentify(context);
         }
         
-        public override Query VisitFor([NotNull] FUSQLParser.ForContext context)
-        {
-            ParsedQuery.Command.Check.GoalTable = context.name().GetText();
-            return base.VisitFor(context);
-        }
         
         public override Query VisitUsing([NotNull] FUSQLParser.UsingContext context)
         {
-            if (ParsedQuery.Command.Check != null)
-            {
-                ParsedQuery.Command.Check.Description = context.@string().GetText();
-            }
-            else if (ParsedQuery.Command.Identify != null)
+            if (ParsedQuery.Command.Identify != null)
             {
                 ParsedQuery.Command.Identify.Description = context.@string().GetText();
             }
@@ -200,11 +195,7 @@ namespace FUSQL
         }
         public override Query VisitWith([NotNull] FUSQLParser.WithContext context)
         {
-            if (ParsedQuery.Command.Check != null)
-            {
-                ParsedQuery.Command.Check.DescriptionTable = context.name().GetText();
-            }
-            else if (ParsedQuery.Command.Identify != null)
+            if (ParsedQuery.Command.Identify != null)
             {
                 ParsedQuery.Command.Identify.DescriptionTable = context.name().GetText();
             }
@@ -218,7 +209,6 @@ namespace FUSQL
         }
         public override Query VisitAnd([NotNull] FUSQLParser.AndContext context)
         {
-            ParsedQuery.Command.Check.GoalTable = context.GetText();
             return base.VisitAnd(context);
         }
     }

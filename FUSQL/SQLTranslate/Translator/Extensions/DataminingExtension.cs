@@ -1,12 +1,6 @@
 ﻿using Database.BaseDb;
 using DataMinner.Mining.Enums;
-using FUSQL.InternalModels;
 using FUSQL.SQLTranslate.Results;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace FUSQL.SQLTranslate.Translator.Extensions
 {
@@ -21,13 +15,15 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
                 //case MiningOp.BinaryClassification:
                   //  return translation.RunBinaryClassification(db);
                 case MiningOp.Classify:
-                    return translation.RunClassifier();
+                    return translation.RunMultiClassifier();
+                case MiningOp.Check:
+                    return translation.RunBinaryClassifier();
                 case MiningOp.BuildBinaryClassification:
-                    return translation.RunBinaryClassification(db);
+                    return translation.BuildBinaryClassification(db);
                 case MiningOp.BuildMultiClassification:
-                    return translation.BuildMulticlassClassification(db);
+                    return translation.BuildMultiClassification(db);
                 case MiningOp.DeleteMultiClassification:
-                    return translation.DeleteClassifier();
+                    return translation.DeleteMultiClassifier();
                 case MiningOp.None:
                     return null;
                 default:
