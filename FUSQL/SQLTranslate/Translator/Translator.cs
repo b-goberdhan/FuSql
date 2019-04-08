@@ -191,7 +191,7 @@ namespace FUSQL.SQLTranslate.Translator
                 string conditionString = "{0} {1} {2} {3} ";
                 if (i > 0 && i != where.Conditions.Count)
                 {
-                    conditionString += "AND ";
+                    conditionString = " AND " + conditionString;
                 }
                 bool hasNot = false;
                 string operation = "";

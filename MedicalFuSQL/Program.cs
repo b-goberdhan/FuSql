@@ -73,8 +73,9 @@ namespace MedicalFuSQL
                     continue;
                 }
                 catch(Exception e)
-                { 
-                    break;
+                {
+                    Console.WriteLine(e.Message);
+                    continue;
                 }
             }
         }

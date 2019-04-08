@@ -1,4 +1,11 @@
 CREATE CLASSIFICATION temp USING commentsReview TO sideEffects FROM drugLibTrain
-CLASSIFY ENTRIES USING temp FROM drugLibTrain WHERE field < 100
+CLASSIFY 'I hate this product' in commentsReview USING temp
+CLASSIFY DATA USING temp FROM drugLibTrain WHERE field < 100
 CREATE CHECKER myChecker USING commentsReview TO ratingEnum FROM drugLibTrainEnum
-CHECK ENTRIES USING myChecker FROM drugLibTrainEnum WHERE field < 100
+CHECK DATA USING myChecker FROM drugLibTrainEnum
+CHECK DATA USING myChecker FROM drugLibTrainEnum WHERE field < 100
+CHECK 'term' in <colomn USING <checkerName>
+FIND 5 GROUPS USING rating FROM drugLibTrainEnum
+FIND 5 GROUPS USING rating FROM drugLibTrainEnum WHERE field not equal 1
+FIND 5 GROUPS USING rating FROM drugLibTrainEnum WHERE field less than 250
+FIND 5 GROUPS USING rating FROM drugLibTrainEnum WHERE field greater than 1000

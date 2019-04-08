@@ -12,25 +12,25 @@ grammar FUSQL;
  create					: CREATE ((classification) | (checker)) (where)? ;
  classification			: CLASSIFICATION name USING (column)+ TO goal from;
  checker				: CHECKER name USING (column)+ TO goal from;
- check					: CHECK (((term)+ USING name) | (ENTRIES USING name from (where)?));
+ check					: CHECK (((term)+ USING name) | (DATA USING name from (where)?));
  delete					: DELETE ((deleteclassification) | (deletechecker));
  deleteclassification	: CLASSIFICATION name ;
  deletechecker			: CHECKER name ;
- classify				: CLASSIFY (((term)+ USING name) | (ENTRIES USING name from (where)?  )) ;
+ classify				: CLASSIFY (((term)+ USING name) | (DATA USING name from (where)?  )) ;
  term					: string IN column ;
  find					: FIND groups from (where)?;
- groups					: number GROUPS name USING (column)+ ; // Groups in this case is analogus to clusters
+ groups					: number GROUPS USING (column)+ ; // Groups in this case is analogus to clusters
  from					: FROM name ;
  where					: WHERE (conditions)+ ;
  dataset_info			: INFO ;
- conditions				: (name EQUAL value) | (name NOT_EQUAL value) | 
-							(name GREATER_THAN value) | (name LESS_THAN value);
+ conditions				: ((name EQUAL value) | (name NOT_EQUAL value) | 
+							(name GREATER_THAN value) | (name LESS_THAN value)) (COMMA)?;
  
  column			: WORD ;
  goal			: WORD ;
  name			: WORD ;
  number			: NUMBER ;
- value			: TEXT | NUMBER ;
+ value			: TEXT | NUMBER | STRING ;
  string			: STRING;
  description	: WORD ;
  and			: AND name ;
@@ -68,6 +68,7 @@ LESS_THAN		: '<' | ('less than');
 IDENTIFY		: I D E N T I F Y ;
 CLASSIFY		: C L A S S I F Y ;
 ENTRIES			: E N T R I E S ;
+DATA			: D A T A;
 FOR				: F O R ;
 WITH			: W I T H ;
 IN				: I N ;
@@ -88,6 +89,7 @@ USING			: U S I N G ;
 FIND			: F I N D ;
 AND				: A N D ;
 OR				: O R ;
+COMMA			: ',' ;
 STRING			: '\'' (~['"])* '\'';
 WORD			: (UPPERCASE | LOWERCASE)+ ;
 TEXT			: ('\'')(WORD)('\'') ;

@@ -66,7 +66,7 @@ namespace FUSQL
         }
         public override Query VisitClassify([NotNull] FUSQLParser.ClassifyContext context)
         {
-            if (context.ENTRIES() != null)
+            if (context.DATA() != null)
             {
                 ParsedQuery.Command.Classify = new Classify()
                 {
@@ -114,9 +114,7 @@ namespace FUSQL
             var command = ParsedQuery.Command;
             command.Find.Group = new Group()
             {
-                Count = int.Parse(context.number().GetText()),
-                Name = context.name().GetText(),
-
+                Count = int.Parse(context.number().GetText())
             };
             return base.VisitGroups(context);
         }
@@ -173,7 +171,7 @@ namespace FUSQL
         }
         public override Query VisitCheck([NotNull] FUSQLParser.CheckContext context)
         {
-            if (context.ENTRIES() != null)
+            if (context.DATA() != null)
             {
                 ParsedQuery.Command.Check = new Check()
                 {
