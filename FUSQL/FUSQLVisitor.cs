@@ -173,11 +173,23 @@ namespace FUSQL
         }
         public override Query VisitCheck([NotNull] FUSQLParser.CheckContext context)
         {
-            ParsedQuery.Command.Check = new Check()
+            if (context.ENTRIES() != null)
             {
-                BinaryClassifierName = context.name().GetText(),
-                Terms = new List<Term>()
-            };
+                ParsedQuery.Command.Check = new Check()
+                {
+                    BinaryClassifierName = context.name().GetText(),
+                    UsingEntries = true
+                };
+            }
+            else
+            {
+                ParsedQuery.Command.Check = new Check()
+                {
+                    BinaryClassifierName = context.name().GetText(),
+                    Terms = new List<Term>()
+                };
+            }
+            
             return base.VisitCheck(context);
         }
         public override Query VisitIdentify([NotNull] FUSQLParser.IdentifyContext context)

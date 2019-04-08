@@ -56,6 +56,13 @@ namespace FUSQL.SQLTranslate.Translator
                     Terms = query.Command.Check.Terms
                 };
             }
+            else if (miningOp == MiningOp.CheckEntries)
+            {
+                operation = new RunBinaryClassificationEntriesOperation(sQLCommand)
+                {
+                    ClassifierName = query.Command.Check.BinaryClassifierName
+                };
+            }
             else if (miningOp == MiningOp.DeleteBinaryClassification)
             {
                 operation = new DeleteBinaryClassificationOperation()
@@ -120,7 +127,14 @@ namespace FUSQL.SQLTranslate.Translator
 
             else if (query.Command.Check != null)
             {
-                return MiningOp.Check;
+                if (query.Command.Check.UsingEntries)
+                {
+                    return MiningOp.CheckEntries;
+                }
+                else
+                {
+                    return MiningOp.Check;
+                }
             }
             else if (query.Command.Create?.BinaryClassification != null)
             {

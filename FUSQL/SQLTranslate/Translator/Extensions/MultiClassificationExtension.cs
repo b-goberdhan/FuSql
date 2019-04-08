@@ -50,7 +50,7 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
         {
             var operation = translation.Operation as RunMultiClassificationEntriesOperation;
             var classifier = FusqlInternal<TRowModel>.GetInstance().GetMultiClassifer(operation.ClassifierName);
-            var results = new RunBinaryClassifierEntriesResultView<TRowModel>();
+            var results = new RunClassifierEntriesResultView<TRowModel>();
             translation.RunSQL(db, (model) =>
             {
                 string goal = classifier.Evaluate(model).GoalTable;

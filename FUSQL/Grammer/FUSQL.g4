@@ -12,7 +12,7 @@ grammar FUSQL;
  create					: CREATE ((classification) | (checker)) (where)? ;
  classification			: CLASSIFICATION name USING (column)+ TO goal from;
  checker				: CHECKER name USING (column)+ TO goal from;
- check					: CHECK (term)+ USING name;
+ check					: CHECK (((term)+ USING name) | (ENTRIES USING name from (where)?));
  delete					: DELETE ((deleteclassification) | (deletechecker));
  deleteclassification	: CLASSIFICATION name ;
  deletechecker			: CHECKER name ;

@@ -10,5 +10,6 @@ namespace FUSQL.Models
     {
         public List<Term> Terms { get; set; }
         public string BinaryClassifierName { get; set; }
+        public bool UsingEntries { get; set; }
     }
 }

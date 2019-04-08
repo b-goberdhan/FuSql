@@ -33,6 +33,22 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
             };
 
         }
+        public static IResultView RunBinaryClassifierEntries<TRowModel>(this Translation<TRowModel> translation, IDb db) where TRowModel : class, new()
+        {
+            var operation = translation.Operation as RunBinaryClassificationEntriesOperation;
+            var classifier = FusqlInternal<TRowModel>.GetInstance().GetBinaryClassification(operation.ClassifierName);
+            var results = new RunClassifierEntriesResultView<TRowModel>();
+            translation.RunSQL(db, (model) =>
+            {
+                var prediction = classifier.Evaluate(model);
+                if (!results.Predictions.ContainsKey(prediction.Prediction.ToString()))
+                {
+                    results.Predictions.Add(prediction.Prediction.ToString(), new List<TRowModel>());
+                }
+                results.Predictions[prediction.Prediction.ToString()].Add(model);
+            });
+            return results;
+        }
         public static ResultView RunBinaryClassifier<TRowModel>(this Translation<TRowModel> translation) where TRowModel : class, new()
         {
             var operation = translation.Operation as RunBinaryClassificationOperation;

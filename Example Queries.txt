@@ -1,4 +1,4 @@
-CREATE CLASSIFICATION temp USING ALL TO rating FROM drugLibTrain
 CREATE CLASSIFICATION temp USING commentsReview TO sideEffects FROM drugLibTrain
-CLASSIFY 'enalapril' IN urlDrugName USING temp
 CLASSIFY ENTRIES USING temp FROM drugLibTrain WHERE field < 100
+CREATE CHECKER myChecker USING commentsReview TO ratingEnum FROM drugLibTrainEnum
+CHECK ENTRIES USING myChecker FROM drugLibTrainEnum WHERE field < 100
