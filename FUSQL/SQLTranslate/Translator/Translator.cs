@@ -35,10 +35,17 @@ namespace FUSQL.SQLTranslate.Translator
             }
             else if (miningOp == MiningOp.Classify)
             {
-                operation = new RunClassificationOperation()
+                operation = new RunClassificationOperation(miningOp)
                 {
                     ClassifierName = query.Command.Classify.ClassifierName,
-                    Terms = query.Command.Classify.Terms
+                    Terms = query.Command.Classify.Terms,                   
+                };
+            }
+            else if (miningOp == MiningOp.ClassifyEntries)
+            {
+                operation = new RunMultiClassificationEntriesOperation(sQLCommand)
+                {
+                    ClassifierName = query.Command.Classify.ClassifierName
                 };
             }
             else if (miningOp == MiningOp.Check)
@@ -103,8 +110,14 @@ namespace FUSQL.SQLTranslate.Translator
             }
             else if (query.Command.Classify != null)
             {
-                return MiningOp.Classify;
+                if (query.Command.Classify.UsingEntries)
+                {
+                    return MiningOp.ClassifyEntries;
+                }
+                else 
+                    return MiningOp.Classify;
             }
+
             else if (query.Command.Check != null)
             {
                 return MiningOp.Check;
@@ -121,31 +134,33 @@ namespace FUSQL.SQLTranslate.Translator
         private static string GetSqlString(Query query)
         {
             string command = "";
-            if(query.Command.Find != null)
+            if(!string.IsNullOrEmpty(query.Command.From))
             {
-                command = "SELECT * FROM " + query.Command.Find.From + " ";
-            }
-            else if(query.Command.Identify != null)
-            {
-                command = "SELECT * FROM " + query.Command.Identify.From;
-            }
-            else if(query.Command.Create?.MultiClassification != null)
-            {
-                var columns = query.Command.Create.MultiClassification.GoalColumn;
-                foreach (var col in query.Command.Create.MultiClassification.InputColumns)
+                string from = "FROM " + query.Command.From;
+                if (query.Command.Create?.MultiClassification != null)
                 {
-                    columns += ", " + col;
+                    var columns = query.Command.Create.MultiClassification.GoalColumn;
+                    foreach (var col in query.Command.Create.MultiClassification.InputColumns)
+                    {
+                        columns += ", " + col;
+                    }
+                    command = "SELECT " + columns + " ";
                 }
-                command = "SELECT " + columns + " FROM " + query.Command.Create.MultiClassification.From;                             
-            }
-            else if(query.Command.Create?.BinaryClassification != null)
-            {     
-                var columns = query.Command.Create.BinaryClassification.GoalColumn;
-                foreach (var col in query.Command.Create.BinaryClassification.InputColumns)
+                else if (query.Command.Create?.BinaryClassification != null)
                 {
-                    columns += ", " + col;
+                    var columns = query.Command.Create.BinaryClassification.GoalColumn;
+                    foreach (var col in query.Command.Create.BinaryClassification.InputColumns)
+                    {
+                        columns += ", " + col;
+                    }
+                    command = "SELECT " + columns + " ";
                 }
-                command = "SELECT " + columns + " FROM " + query.Command.Create.BinaryClassification.From;
+                else
+                {
+                    command = "SELECT * ";
+                }
+                command += from;
+                
             }
             if (query.Command.Where != null && query.Command.Where.Conditions.Count > 0)
             {

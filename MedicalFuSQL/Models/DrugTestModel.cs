@@ -9,6 +9,7 @@ namespace MedicalFuSQL.Models
     public class DrugTestModel
     {
         public long field1 { get; set; }
+        public long field { get; set; }
         public string urlDrugName { get; set; }
         public float rating { get; set; }
         public string effectiveness { get; set; }
@@ -20,7 +21,7 @@ namespace MedicalFuSQL.Models
 
         public override string ToString()
         {
-            return "Rating: " + rating;
+            return "Key: " + field;
         }
     }
 }

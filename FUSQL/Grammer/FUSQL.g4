@@ -16,7 +16,7 @@ grammar FUSQL;
  delete					: DELETE ((deleteclassification) | (deletechecker));
  deleteclassification	: CLASSIFICATION name ;
  deletechecker			: CHECKER name ;
- classify				: CLASSIFY (term)+ USING name ;
+ classify				: CLASSIFY (((term)+ USING name) | (ENTRIES USING name from (where)?  )) ;
  term					: string IN column ;
  find					: FIND groups from (where)?;
  groups					: number GROUPS name USING (column)+ ; // Groups in this case is analogus to clusters
@@ -67,6 +67,7 @@ GREATER_THAN	: '>' | ('greater than') ;
 LESS_THAN		: '<' | ('less than');
 IDENTIFY		: I D E N T I F Y ;
 CLASSIFY		: C L A S S I F Y ;
+ENTRIES			: E N T R I E S ;
 FOR				: F O R ;
 WITH			: W I T H ;
 IN				: I N ;

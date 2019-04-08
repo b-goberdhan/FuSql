@@ -16,6 +16,8 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
                   //  return translation.RunBinaryClassification(db);
                 case MiningOp.Classify:
                     return translation.RunMultiClassifier();
+                case MiningOp.ClassifyEntries:
+                    return translation.RunMultiClassifierEntries(db);
                 case MiningOp.Check:
                     return translation.RunBinaryClassifier();
                 case MiningOp.BuildBinaryClassification:

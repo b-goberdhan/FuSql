@@ -10,6 +10,6 @@ namespace FUSQL.Models
     {
         public List<Term> Terms { get; set; } = new List<Term>();
         public string ClassifierName { get; set; }
-        
+        public bool UsingEntries { get; set; } = false;
     }
 }

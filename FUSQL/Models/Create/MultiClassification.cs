@@ -11,6 +11,5 @@ namespace FUSQL.Models.Create
         public string Name { get; set; }
         public List<string> InputColumns { get; set; } = new List<string>();
         public string GoalColumn { get; set; }
-        public string From { get; set; }
     }
 }

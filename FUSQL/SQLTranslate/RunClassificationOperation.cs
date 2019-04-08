@@ -1,4 +1,5 @@
-﻿using FUSQL.Models;
+﻿using DataMinner.Mining.Enums;
+using FUSQL.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +12,6 @@ namespace FUSQL.SQLTranslate
     {
         public List<Term> Terms { get; set; }
         public string ClassifierName { get; set; }
-
-        public RunClassificationOperation() : base(null, DataMinner.Mining.Enums.MiningOp.Classify) { }
+        public RunClassificationOperation(MiningOp miningOp) : base(null, miningOp) { }
     }
 }

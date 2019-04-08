@@ -9,6 +9,5 @@ namespace FUSQL.Models
     public class Find
     {
         public Group Group { get; set; }
-        public string From { get; set; }
     }
 }

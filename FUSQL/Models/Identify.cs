@@ -8,7 +8,6 @@ namespace FUSQL.Models
 {
     public class Identify
     {
-        public string From { get; set; }
         public string Description { get; set; }
         public string DescriptionTable { get; set; }
         public string GoalTable { get; set; }

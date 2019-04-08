@@ -17,6 +17,7 @@ namespace DataMinner.Mining.Enums
         Classify,
         DeleteMultiClassification,
         Check,
-        DeleteBinaryClassification
+        DeleteBinaryClassification,
+        ClassifyEntries
     }
 }

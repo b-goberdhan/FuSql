@@ -46,11 +46,28 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
                 Name = operation.Name
             };
         }
-        public static ResultView RunMultiClassifier<TRowModel>(this Translation<TRowModel> translation) where TRowModel : class, new()
+        public static IResultView RunMultiClassifierEntries<TRowModel>(this Translation<TRowModel> translation, IDb db) where TRowModel : class, new()
+        {
+            var operation = translation.Operation as RunMultiClassificationEntriesOperation;
+            var classifier = FusqlInternal<TRowModel>.GetInstance().GetMultiClassifer(operation.ClassifierName);
+            var results = new RunBinaryClassifierEntriesResultView<TRowModel>();
+            translation.RunSQL(db, (model) =>
+            {
+                string goal = classifier.Evaluate(model).GoalTable;
+                if (!results.Predictions.ContainsKey(goal))
+                {
+                    results.Predictions.Add(goal, new List<TRowModel>());
+                }
+                results.Predictions[goal].Add(model);
+            });
+           
+            return results;
+            
+        }
+        public static IResultView RunMultiClassifier<TRowModel>(this Translation<TRowModel> translation) where TRowModel : class, new()
         {
             var operation = translation.Operation as RunClassificationOperation;
             var classifier = FusqlInternal<TRowModel>.GetInstance().GetMultiClassifer(operation.ClassifierName);
-
             TRowModel data = Activator.CreateInstance(typeof(TRowModel)) as TRowModel;
             foreach (var term in operation.Terms)
             {
@@ -62,6 +79,8 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
             {
                 Prediction = result
             };
+            
+            
         }
 
         public static ResultView DeleteMultiClassifier<TRowModel>(this Translation<TRowModel> translation) where TRowModel : class, new()

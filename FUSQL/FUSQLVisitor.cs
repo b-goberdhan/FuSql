@@ -66,11 +66,23 @@ namespace FUSQL
         }
         public override Query VisitClassify([NotNull] FUSQLParser.ClassifyContext context)
         {
-            ParsedQuery.Command.Classify = new Classify()
+            if (context.ENTRIES() != null)
             {
-                Terms = new List<Term>(),
-                ClassifierName = context.name().GetText()
-            };
+                ParsedQuery.Command.Classify = new Classify()
+                {
+                    UsingEntries = true,
+                    ClassifierName = context.name().GetText()
+                };
+            }
+            else
+            {
+                ParsedQuery.Command.Classify = new Classify()
+                {
+                    Terms = new List<Term>(),
+                    ClassifierName = context.name().GetText()
+                };
+            }
+            
             return base.VisitClassify(context);
         }
         
@@ -111,22 +123,7 @@ namespace FUSQL
 
         public override Query VisitFrom([NotNull] FUSQLParser.FromContext context)
         {
-            if (ParsedQuery.Command.Find != null)
-            {
-                ParsedQuery.Command.Find.From = context.name().GetText();
-            }
-            else if (ParsedQuery.Command.Identify != null)
-            {
-                ParsedQuery.Command.Identify.From = context.name().GetText();
-            }
-            else if (ParsedQuery.Command.Create?.MultiClassification != null)
-            {
-                ParsedQuery.Command.Create.MultiClassification.From = context.name().GetText();
-            }
-            else if (ParsedQuery.Command.Create?.BinaryClassification != null)
-            {
-                ParsedQuery.Command.Create.BinaryClassification.From = context.name().GetText();
-            }
+            ParsedQuery.Command.From = context.name().GetText();
             return base.VisitFrom(context);
         }
         public override Query VisitWhere([NotNull] FUSQLParser.WhereContext context)
