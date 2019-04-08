@@ -56,8 +56,13 @@ namespace FUSQL
         public override Query VisitDeleteclassification([NotNull] FUSQLParser.DeleteclassificationContext context)
         {
             
-            ParsedQuery.Command.Delete.DeleteClassifactionName = context.name().GetText();
+            ParsedQuery.Command.Delete.DeleteMultiClassifictionName = context.name().GetText();
             return base.VisitDeleteclassification(context);
+        }
+        public override Query VisitDeletechecker([NotNull] FUSQLParser.DeletecheckerContext context)
+        {
+            ParsedQuery.Command.Delete.DeleteBinaryClassificationName = context.name().GetText();
+            return base.VisitDeletechecker(context);
         }
         public override Query VisitClassify([NotNull] FUSQLParser.ClassifyContext context)
         {

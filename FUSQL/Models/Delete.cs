@@ -8,6 +8,7 @@ namespace FUSQL.Models
 {
     public class Delete
     {
-        public string DeleteClassifactionName { get; set; }
+        public string DeleteMultiClassifictionName { get; set; }
+        public string DeleteBinaryClassificationName { get; set; }
     }
 }

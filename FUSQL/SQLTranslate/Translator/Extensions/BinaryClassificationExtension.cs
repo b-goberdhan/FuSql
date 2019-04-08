@@ -51,6 +51,15 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
                 Prediction = prediction.Prediction
             };
         }
+        public static ResultView DeleteBinaryClassifer<TRowModel>(this Translation<TRowModel> translation) where TRowModel : class, new()
+        {
+            var operation = translation.Operation as DeleteBinaryClassificationOperation;
+            FusqlInternal<TRowModel>.GetInstance().DeleteBinaryClassifier(operation.Name);
+            return new DeleteBinaryClassifierResultView()
+            {
+                Name = operation.Name
+            };
+        }
 
     }
 }

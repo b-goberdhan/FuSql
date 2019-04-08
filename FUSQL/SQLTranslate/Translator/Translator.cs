@@ -49,11 +49,18 @@ namespace FUSQL.SQLTranslate.Translator
                     Terms = query.Command.Check.Terms
                 };
             }
+            else if (miningOp == MiningOp.DeleteBinaryClassification)
+            {
+                operation = new DeleteBinaryClassificationOperation()
+                {
+                    Name = query.Command.Delete.DeleteBinaryClassificationName
+                };
+            }
             else if (miningOp == MiningOp.DeleteMultiClassification)
             {
                 operation = new DeleteMultiClassificationOperation()
                 {
-                    Name = query.Command.Delete.DeleteClassifactionName
+                    Name = query.Command.Delete.DeleteMultiClassifictionName
                 };
             }
             else if (miningOp == MiningOp.BuildMultiClassification)
@@ -82,9 +89,13 @@ namespace FUSQL.SQLTranslate.Translator
             {
                 return MiningOp.MultiClassification;
             }
-            else if (query.Command.Delete != null)
+            else if (query.Command.Delete?.DeleteMultiClassifictionName != null)
             {
                 return MiningOp.DeleteMultiClassification;
+            }
+            else if (query.Command.Delete?.DeleteBinaryClassificationName != null)
+            {
+                return MiningOp.DeleteBinaryClassification;
             }
             else if (query.Command.Create?.MultiClassification != null)
             {
@@ -125,10 +136,10 @@ namespace FUSQL.SQLTranslate.Translator
                 {
                     columns += ", " + col;
                 }
-                command = "SELECT " + columns + " FROM " + query.Command.Create.MultiClassification.From;
+                command = "SELECT " + columns + " FROM " + query.Command.Create.MultiClassification.From;                             
             }
             else if(query.Command.Create?.BinaryClassification != null)
-            {
+            {     
                 var columns = query.Command.Create.BinaryClassification.GoalColumn;
                 foreach (var col in query.Command.Create.BinaryClassification.InputColumns)
                 {

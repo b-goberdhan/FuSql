@@ -24,6 +24,8 @@ namespace FUSQL.SQLTranslate.Translator.Extensions
                     return translation.BuildMultiClassification(db);
                 case MiningOp.DeleteMultiClassification:
                     return translation.DeleteMultiClassifier();
+                case MiningOp.DeleteBinaryClassification:
+                    return translation.DeleteBinaryClassifer();
                 case MiningOp.None:
                     return null;
                 default:

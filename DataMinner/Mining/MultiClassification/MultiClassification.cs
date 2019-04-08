@@ -36,10 +36,10 @@ namespace DataMinner.Mining.MultiClassification
                     inputColumnEstimatorChain = pipeline.Append(_mlContext.Transforms.Text.FeaturizeText(inputColumnName: input, outputColumnName: feature));
                 }
                 else
-                {
+                {   
                     inputColumnEstimatorChain = inputColumnEstimatorChain.Append(_mlContext.Transforms.Text.FeaturizeText(inputColumnName: input, outputColumnName: feature));
                 }
-                   // .Append(_mlContext.Transforms.Concatenate("Features", feature));
+
             }
             var concatonatedFeaturesChain = inputColumnEstimatorChain.Append(_mlContext.Transforms.Concatenate("Features", features.ToArray()));
 
