@@ -16,12 +16,22 @@ namespace MedicalFuSQL.Models
         public string condition { get; set; }
         public string sideEffectsReview { get; set; }
         public string sideEffects { get; set; }
+        public string benefitsReview { get; set; }
         public string commentsReview { get; set; }
         public bool ratingEnum { get; set; }
 
         public override string ToString()
         {
-            return "Key: " + field;
+            string result = "";
+            foreach (var property in this.GetType().GetProperties())
+            {
+                if (!property.Name.EndsWith("Review"))
+                {
+                    result += property.Name + ": " + property.GetValue(this).ToString() + ", ";
+                }
+                
+            }
+            return result;
         }
     }
 }

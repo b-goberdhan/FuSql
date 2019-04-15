@@ -5,7 +5,19 @@ CREATE CHECKER myChecker USING commentsReview TO ratingEnum FROM drugLibTrainEnu
 CHECK DATA USING myChecker FROM drugLibTrainEnum
 CHECK DATA USING myChecker FROM drugLibTrainEnum WHERE field < 100
 CHECK 'term' in <colomn USING <checkerName>
-FIND 5 GROUPS USING rating FROM drugLibTrainEnum
-FIND 5 GROUPS USING rating FROM drugLibTrainEnum WHERE field not equal 1
-FIND 5 GROUPS USING rating FROM drugLibTrainEnum WHERE field less than 250
-FIND 5 GROUPS USING rating FROM drugLibTrainEnum WHERE field greater than 1000
+
+
+FIND 5 CLUSTER USING rating FROM drugLibTrainEnum
+FIND 5 CLUSTER USING rating FROM drugLibTrainEnum WHERE field not equal 1
+FIND 5 CLUSTER USING rating FROM drugLibTrainEnum WHERE field less than 250
+FIND 5 CLUSTER USING rating FROM drugLibTrainEnum WHERE field greater than 1000
+
+
+CREATE CLASSIFICATION myClass USING commentsReview benefitsReview TO effectiveness FROM drugLibTrain
+CLASSIFY DATA USING myClass FROM drugLibTrain WHERE field < 20
+CLASSIFY 'DOES NOT WORK AT ALL' IN commentsReview 'Started off fine but than i started having terrible problems' IN benefitsReview USING myClass
+
+CREATE CHECKER myChecker USING rating TO ratingEnums FROM drugLibTrainEnum
+CREATE CHECKER drugNameChecker USING urlDrugName TO ratingEnum FROM drugLibTrainEnum
+
+CHECK 'hair loss' IN condition USING myChecker

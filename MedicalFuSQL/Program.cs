@@ -44,6 +44,7 @@ namespace MedicalFuSQL
                 try
                 {
                     string queryString = Console.ReadLine();
+                    if (queryString == "") continue;
                     Query query = fusql.ParseQuery(queryString + "\n");
                     Translation<DrugTestModel> translation = Translator.TranslateQuery<DrugTestModel>(query);
                     var result = translation.RunDataMining(_db) as IResultView;

@@ -19,7 +19,7 @@ grammar FUSQL;
  classify				: CLASSIFY (((term)+ USING name) | (DATA USING name from (where)?  )) ;
  term					: string IN column ;
  find					: FIND groups from (where)?;
- groups					: number GROUPS USING (column)+ ; // Groups in this case is analogus to clusters
+ groups					: number CLUSTERS USING (column)+ ; // Groups in this case is analogus to clusters
  from					: FROM name ;
  where					: WHERE (conditions)+ ;
  dataset_info			: INFO ;
@@ -72,7 +72,7 @@ DATA			: D A T A;
 FOR				: F O R ;
 WITH			: W I T H ;
 IN				: I N ;
-GROUPS			: G R O U P S ;
+CLUSTERS		: C L U S T E R S ;
 CREATE			: C R E A T E ;
 DELETE			: D E L E T E ;
 ALL				: A L L ;
